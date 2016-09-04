@@ -1,0 +1,8 @@
+# Meteor files #
+.meteor/
+
+# Node modules #
+node_modules/
+
+# Strava API credentials #
+/server/strava-config.js

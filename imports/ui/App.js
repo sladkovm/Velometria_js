@@ -5,8 +5,12 @@
 */
 
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Grid, Col, Row } from 'react-bootstrap';
+
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { ReactLayout } from 'meteor/kadira:react-layout';
+
 
 import AppHeader from './ui-components/App-header';
 import AppSidePanel from './ui-components/App-side-panel';
@@ -19,15 +23,31 @@ export default class App extends Component {
   render() {
     return (
       <Grid>
-        <Row><AppHeader /></Row>
+        <Row>{ this.props.header }</Row>
         <Row>
           <Col md={8}>
-            <AppMainContainer />
+            { this.props.main }
           </Col>
           <Col md={4}>
-            <AppSidePanel />
+            { this.props.sidebar }
           </Col>
         </Row>
       </Grid>);
   }
 }
+
+App.PropTypes = {
+  header: PropTypes.object.isRequired,
+  main: PropTypes.object.isRequired,
+  sidebar: PropTypes.object.isRequired,
+};
+
+
+FlowRouter.route('/', {
+  action() {
+    ReactLayout.render(App, {
+      header: <AppHeader />,
+      main: <AppMainContainer />,
+      sidebar: <AppSidePanel /> });
+  },
+});

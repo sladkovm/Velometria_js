@@ -9,7 +9,7 @@ import React, { Component, PropTypes } from 'react';
 import { Grid, Col, Row } from 'react-bootstrap';
 
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { ReactLayout } from 'meteor/kadira:react-layout';
+import { mount } from 'react-mounter';
 
 
 import AppHeader from './ui-components/App-header';
@@ -45,7 +45,7 @@ App.PropTypes = {
 
 FlowRouter.route('/', {
   action() {
-    ReactLayout.render(App, {
+    mount(App, {
       header: <AppHeader />,
       main: <AppMainContainer />,
       sidebar: <AppSidePanel /> });

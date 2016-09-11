@@ -5,6 +5,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
 
+import { Link } from 'react-router';
+
 
 /** @external - React components */
 import React, { Component, PropTypes } from 'react';
@@ -25,7 +27,7 @@ export default class Activity extends Component {
       active={this.props.active}
       onClick={() => this.handleClick(_id)}
     >
-            {this.props.activity.name}
+      <Link to="/activity:_id" activeClassName="active">{this.props.activity.name}</Link>
     </ListGroupItem>);
   }
 }

@@ -22,7 +22,7 @@ import { Activities } from '../../api/activities';
 
 
 /** @class - View component for an App side pannel */
-class AppSidePanel extends Component {
+class SidePanel extends Component {
   constructor(props) {
     super(props);
     this.state = { currentActive: Session.get('currentActive') };
@@ -60,7 +60,7 @@ class AppSidePanel extends Component {
   }
 }
 
-AppSidePanel.PropTypes = {
+SidePanel.PropTypes = {
   loading: PropTypes.bool.isRequired,
   activities: PropTypes.array.isRequired,
 };
@@ -75,4 +75,4 @@ export default createContainer(() => {
   const activities = Activities.find().fetch();
 
   return { loading, activities };
-}, AppSidePanel);
+}, SidePanel);

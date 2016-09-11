@@ -4,50 +4,23 @@
 * acivities can be accessed as this.props.activities
 */
 
-
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { Grid, Col, Row } from 'react-bootstrap';
 
-import { FlowRouter } from 'meteor/kadira:flow-router';
-import { mount } from 'react-mounter';
+import Header from './ui-components/Header';
 
-
-import AppHeader from './ui-components/App-header';
-import AppSidePanel from './ui-components/App-side-panel';
-import AppMainContainer from './ui-components/App-main-container';
-
-
-/** @classdesc - main layout of the page, export will be done as a smart component*/
-export default class App extends Component {
-
-  render() {
-    return (
-      <Grid>
-        <Row>{ this.props.header }</Row>
-        <Row>
-          <Col md={8}>
-            { this.props.main }
-          </Col>
-          <Col md={4}>
-            { this.props.sidebar }
-          </Col>
-        </Row>
-      </Grid>);
-  }
-}
-
-App.PropTypes = {
-  header: PropTypes.object.isRequired,
-  main: PropTypes.object.isRequired,
-  sidebar: PropTypes.object.isRequired,
+/** @function - main layout of the page */
+export const App = (children) => {
+  const { mainView, sidePanel } = children;
+  return (<Grid>
+    <Row><Header /></Row>
+    <Row>
+      <Col md={8}>
+        { mainView }
+      </Col>
+      <Col md={4}>
+        { sidePanel }
+      </Col>
+    </Row>
+  </Grid>);
 };
-
-
-FlowRouter.route('/', {
-  action() {
-    mount(App, {
-      header: <AppHeader />,
-      main: <AppMainContainer />,
-      sidebar: <AppSidePanel /> });
-  },
-});

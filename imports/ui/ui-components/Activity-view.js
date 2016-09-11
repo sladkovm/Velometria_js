@@ -19,7 +19,7 @@ import { Activities } from '../../api/activities';
 
 
 /** @class - Main view contaner of the App */
-export default class AppMainContainer extends Component {
+export default class ActivityView extends Component {
   constructor(props) {
     super(props);
   }
@@ -27,7 +27,7 @@ export default class AppMainContainer extends Component {
   render() {
     return (<Panel>
               App Main Container
-              {Session.get('currentActive')}
+              <p>{Session.get('currentActive')}</p>
             </Panel>)
   }
 }
@@ -43,4 +43,4 @@ export default createContainer(() => {
   const activities = Activities.find().fetch();
 
   return { loading, activities };
-}, AppMainContainer);
+}, ActivityView);

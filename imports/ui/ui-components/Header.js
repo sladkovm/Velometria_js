@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
-export default class AppHeader extends Component {
+export default class Header extends Component {
   constructor(props){
     super(props)
   }

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import { Link } from 'react-router';
 
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
@@ -17,7 +18,7 @@ export default class Header extends Component {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">React-Bootstrap</a>
+            <Link to="/">Velometria</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

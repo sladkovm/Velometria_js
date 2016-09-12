@@ -17,6 +17,8 @@ import { Panel, ListGroup } from 'react-bootstrap';
 import Activity from './Activity';
 
 
+import { Loading } from './Loading';
+
 /** @external - import Activities collection to subscribe to */
 import { Activities } from '../../api/activities';
 
@@ -29,6 +31,7 @@ class SidePanel extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  /** @method - Set the active state using Session global variable */
   handleClick() {
     this.setState({ currentActive: Session.get('currentActive')});
   }
@@ -39,7 +42,7 @@ class SidePanel extends Component {
   renderActivities() {
     const loading = this.props.loading;
     const activities = this.props.activities;
-    return loading ? 'Loading' : activities.map((activity) => {
+    return loading ? <Loading /> : activities.map((activity) => {
       const active = (activity._id === this.state.currentActive)
       return (<Activity
         key={activity._id}

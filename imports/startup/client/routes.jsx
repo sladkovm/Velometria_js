@@ -6,6 +6,7 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 import { App } from '../../ui/App.js';
 import DefaultView from '../../ui/ui-components/Default-view';
+import ActivityView from '../../ui/ui-components/Activity-view';
 import SidePanel from '../../ui/ui-components/Side-panel';
 
 
@@ -16,6 +17,10 @@ const renderRoutes = () => (
       <Route
         path="/"
         components={{ mainView: DefaultView, sidePanel: SidePanel }}
+      />
+      <Route
+        path="/activity/:_id"
+        components={{ mainView: ActivityView, sidePanel: SidePanel }}
       />
     </Route>
   </Router>

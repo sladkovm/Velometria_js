@@ -4,18 +4,12 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Session } from 'meteor/session';
-
 import { Link } from 'react-router';
-
-
-/** @external - React components */
 import React, { Component, PropTypes } from 'react';
 import { ListGroupItem } from 'react-bootstrap';
 
 
 export default class Activity extends Component {
-
-  /** @method - set Activity to active, load Stream */
   handleClick(_id) {
     Session.set( 'currentActive', _id);
     // Meteor.call('fetchAndUpdateStream', _id)

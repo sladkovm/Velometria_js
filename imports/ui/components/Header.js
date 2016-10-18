@@ -1,15 +1,10 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router';
-
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 
 export default class Header extends Component {
-  constructor(props){
-    super(props)
-  }
-
   handleSelect(eventKey) {
-    event.preventDefault();
+    eventKey.preventDefault();
     // alert(`selected ${eventKey}`);
   }
 

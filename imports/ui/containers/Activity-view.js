@@ -1,44 +1,41 @@
 /** @file - Component to define the App level main container */
 
-/** @external - Meteor modules */
+
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Session } from 'meteor/session';
-
-/** @external - React modules */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
-
-/** @external - import Activities collection to subscribe to */
-import { Activities } from '../../api/activities';
-import { Streams } from '../../api/streams';
-
-/** @external - App components */
-import { Loading } from './Loading';
+import { Activities } from '../../api/activities/activities';
+import { Streams } from '../../api/streams/streams';
+import { Loading } from '../components/Loading';
+import { SimpleStreamsPlot } from '../d3-components/simple-streams-plot';
 
 
-/** @class - Main view contaner of the App */
 class ActivityView extends Component {
-
   render() {
     const _id = this.props.routeParams._id;
     const loading = this.props.loading;
     const activity = this.props.activity;
     const stream = this.props.stream;
-    loading ? console.log('loading') : console.log(stream)
-    return loading ? <Loading /> :
+    if (loading) {
+      console.log('loading');
+    } else {
+      console.log(stream);
+    }
+    return loading ?
+      <Loading /> :
       (<Panel>
         Acitivity View
         <p>Session: {Session.get('currentActive')}</p>
         <p>this.props.routeParams: {_id}</p>
         <p>{ activity.name }</p>
+        <SimpleStreamsPlot />
       </Panel>);
   }
 }
 
-/** @exports - return smart component App with bind to Activities collection
-* This will create this.props.activities property on the component App
-*/
+
 export default createContainer(({ params }) => {
   const { _id } = params;
   const activitySub = Meteor.subscribe('activities', _id);

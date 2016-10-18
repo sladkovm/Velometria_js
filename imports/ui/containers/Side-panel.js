@@ -3,24 +3,15 @@
 /** @external - Meteor modules */
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Tracker } from 'meteor/tracker';
-
 import { Session } from 'meteor/session';
-Session.set('currentActive', undefined);
-
-/** @external - React modules */
 import React, { Component, PropTypes } from 'react';
 import { Panel, ListGroup } from 'react-bootstrap';
+import Activity from '../components/Activity';
+import { Loading } from '../components/Loading';
+import { Activities } from '../../api/activities/activities';
 
 
-/** @external - Child React components */
-import Activity from './Activity';
-
-
-import { Loading } from './Loading';
-
-/** @external - import Activities collection to subscribe to */
-import { Activities } from '../../api/activities';
+Session.set('currentActive', undefined);
 
 
 /** @class - View component for an App side pannel */
@@ -44,11 +35,13 @@ class SidePanel extends Component {
     const activities = this.props.activities;
     return loading ? <Loading /> : activities.map((activity) => {
       const active = (activity._id === this.state.currentActive)
-      return (<Activity
-        key={activity._id}
-        activity={activity}
-        active={active}
-      />);
+      return (
+        <Activity
+          key={activity._id}
+          activity={activity}
+          active={active}
+        />
+    );
     }, this);
   }
 

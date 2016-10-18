@@ -8,6 +8,7 @@
     "pretest": "npm run lint --silent"
   },
   "dependencies": {
+    "d3": "^4.2.3",
     "meteor-node-stubs": "~0.2.0",
     "react": "^15.3.1",
     "react-bootstrap": "^0.30.3",

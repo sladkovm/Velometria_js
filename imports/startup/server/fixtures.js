@@ -2,7 +2,7 @@
 
 import { Meteor } from 'meteor/meteor';
 import { Activities } from '../../api/activities/activities';
-import { getStravaActivitiesList } from '../../api/strava-v3/strava-api';
+import { getStravaActivitiesList } from '../../api/strava/strava-api';
 import stravaConfig from './strava-config.json';
 
 const { STRAVA_ACCESS_TOKEN } = stravaConfig;

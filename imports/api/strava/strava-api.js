@@ -5,8 +5,8 @@
 
 import { Meteor } from 'meteor/meteor';
 import strava from 'strava-v3';
-import { Activities } from './activities/activities';
-import { Streams } from './streams/streams';
+import { Activities } from '../activities/activities.js';
+import { Streams } from '../streams/streams';
 import { ACTIVITY_TYPES } from './strava-constants.js';
 
 

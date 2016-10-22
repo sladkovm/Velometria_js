@@ -1,20 +1,18 @@
-/** @file - set up all routes in the app*/
+/** @file - set up all routes in the app */
 
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { render } from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 
-import AppLayout from '../../ui/layouts/AppLayout';
+import AppLayoutContainer from '../../ui/containers/AppLayout';
 import DefaultView from '../../ui/containers/Default-view';
 import SidePanel from '../../ui/containers/Side-panel';
 import ActivityView from '../../ui/components/Activity-view';
 
 
 /** @function - Router definition */
-const renderRoutes = () => (
+const configureRouter = () => (
   <Router history={browserHistory}>
-    <Route component={AppLayout} >
+    <Route component={AppLayoutContainer} >
       <Route
         path="/"
         components={{ mainView: DefaultView, sidePanel: SidePanel }}
@@ -29,7 +27,4 @@ const renderRoutes = () => (
 // Passing :id will make it available at the components via props.params.id
 
 
-// Render the App by rendering router
-Meteor.startup(() => {
-  render(renderRoutes(), document.getElementById('render-target'));
-});
+export default configureRouter;

@@ -6,7 +6,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import AppLayoutContainer from '../../ui/containers/AppLayout';
 import DefaultView from '../../ui/containers/Default-view';
 import SidePanel from '../../ui/containers/Side-panel';
-import ActivityView from '../../ui/components/Activity-view';
+import ActivityView from '../../ui/containers/Activity-view';
 
 
 /** @function - Router definition */

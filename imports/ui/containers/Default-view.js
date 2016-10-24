@@ -1,10 +1,8 @@
 /** @file - Component to define the App level main container */
 
-import { Meteor } from 'meteor/meteor';
-import { createContainer } from 'meteor/react-meteor-data';
 import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
-import { Activities } from '../../api/activities/activities';
+import { connect } from 'react-redux';
 
 
 class DefaultView extends Component {
@@ -23,11 +21,7 @@ class DefaultView extends Component {
   }
 }
 
-
-export default createContainer(() => {
-  const subscription = Meteor.subscribe('activities');
-  const loading = !subscription.ready();
-  const activities = Activities.find().fetch();
-
-  return { loading, activities };
-}, DefaultView);
+const mapStateToProps = (state) => ({
+  activities: state.activities,
+});
+export default connect(mapStateToProps)(DefaultView);

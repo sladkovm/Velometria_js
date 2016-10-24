@@ -1,7 +1,3 @@
-/**
-* @file - React component for Activities list
-*/
-
 import { Link } from 'react-router';
 import React from 'react';
 

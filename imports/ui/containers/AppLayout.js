@@ -2,7 +2,7 @@
 
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Col, Row } from 'react-bootstrap';
 import Header from '../components/Header';
@@ -22,9 +22,9 @@ class AppLayout extends Component {
   storeMeteorData() {
     const { isReady, activities, dispatch } = this.props;
     if (!isReady) {
-      console.log('Loading');
+      // console.log('Loading', state);
     } else {
-      console.log('dispatching', activities);
+      // console.log('dispatching', state);
       dispatch(receiveActivities(activities));
     }
   }
@@ -49,6 +49,12 @@ class AppLayout extends Component {
     );
   }
 }
+
+AppLayout.propTypes = {
+  handle: PropTypes.object,
+  isReady: PropTypes.bool,
+  activities: PropTypes.array,
+};
 
 // Create Meteor Data container to connect pub/sub data to the component
 const getMeteorData = () => {

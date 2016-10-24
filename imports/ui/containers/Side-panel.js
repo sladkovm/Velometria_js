@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import ActivityPanel from '../components/ActivityPanel.js';
 import { Loading } from '../components/Loading';
+import { getActivitiesById } from '../../reducers/activities';
 
 
 class SidePanel extends Component {
@@ -16,7 +17,7 @@ class SidePanel extends Component {
           key={activity.id}
           activity={activity}
         />
-      ), this);
+      ));
   }
 
   render() {
@@ -32,6 +33,6 @@ class SidePanel extends Component {
 
 
 const mapStateToProps = (state) => ({
-  activities: state.activities,
+  activities: getActivitiesById(state),
 });
 export default connect(mapStateToProps)(SidePanel);

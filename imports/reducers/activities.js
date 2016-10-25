@@ -27,11 +27,8 @@ const activities = combineReducers({ byId, allIds });
 export default activities;
 
 // Selector
-export const getActivitiesById = (state, id = undefined) => {
+export const getAllActivities = (state) => {
   if (state.activities.allIds.length !== 0) { // data is loaded from Mongo
-    if (id) { // Return one activitie
-      return state.activities.byId[id];
-    } // Return all activities
     return state.activities.allIds.map(idx => state.activities.byId[idx]);
   }
   return [];

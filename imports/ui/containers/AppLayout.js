@@ -7,21 +7,27 @@ import { connect } from 'react-redux';
 import { Grid, Col, Row } from 'react-bootstrap';
 import Header from '../components/Header';
 import { Activities } from '../../api/activities/activities';
+import { Streams } from '../../api/streams/streams';
 import receiveActivities from '../../actions/receiveActivities';
+import receiveStreams from '../../actions/receiveStreams';
 
 
 class AppLayout extends Component {
   componentDidMount() {
-    this.storeMeteorData();
+    console.log('componentDidMount')
+    this.storeActivities();
+    this.storeStreams();
   }
 
   componentDidUpdate() {
-    this.storeMeteorData();
+    console.log('componentDidUpdate')
+    this.storeActivities();
+    this.storeStreams();
   }
 
-  storeMeteorData() {
-    const { isReady, activities, dispatch } = this.props;
-    if (!isReady) {
+  storeActivities() {
+    const { isReadyActivities, activities, dispatch, state } = this.props;
+    if (!isReadyActivities) {
       // console.log('Loading', state);
     } else {
       // console.log('dispatching', state);
@@ -29,8 +35,16 @@ class AppLayout extends Component {
     }
   }
 
+  storeStreams() {
+    const { isReadyStreams, streams, dispatch, state } = this.props;
+    if (!isReadyStreams) {
+    } else {
+      dispatch(receiveStreams(streams));
+    }
+  }
+
   render() {
-    // this.storeMeteorData();
+    // this.storeActivities();
     const { mainView, sidePanel } = this.props;
     return (
       <Grid>
@@ -51,18 +65,25 @@ class AppLayout extends Component {
 }
 
 AppLayout.propTypes = {
-  handle: PropTypes.object,
-  isReady: PropTypes.bool,
+  isReadyActivities: PropTypes.bool,
   activities: PropTypes.array,
+  isReadyStreams: PropTypes.bool,
+  streams: PropTypes.array,
 };
 
 // Create Meteor Data container to connect pub/sub data to the component
 const getMeteorData = () => {
-  const handle = Meteor.subscribe('activities');
-  const isReady = handle.ready();
+  const handleActivities = Meteor.subscribe('activities');
+  const isReadyActivities = handleActivities.ready();
   const activities = Activities.find().fetch();
-  return { handle, isReady, activities };
+
+  const handleStreams = Meteor.subscribe('streams');
+  const isReadyStreams = handleStreams.ready();
+  const streams = Streams.find().fetch();
+
+  return { isReadyActivities, activities, isReadyStreams, streams };
 };
+
 const AppLayoutContainer = createContainer(getMeteorData, AppLayout);
 
 // Connect to the Redux store

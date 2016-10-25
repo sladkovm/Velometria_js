@@ -2,4 +2,5 @@
 
 
 import '../../api/activities/server/publications.js';
+import '../../api/streams/server/publications.js';
 import './fixtures';

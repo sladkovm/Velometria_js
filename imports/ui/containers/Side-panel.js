@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import ActivityPanel from '../components/ActivityPanel.js';
 import { Loading } from '../components/Loading';
-import { getActivitiesById } from '../../reducers/activities';
+import { getAllActivities } from '../../reducers/activities';
 
 
 class SidePanel extends Component {
@@ -33,6 +33,6 @@ class SidePanel extends Component {
 
 
 const mapStateToProps = (state) => ({
-  activities: getActivitiesById(state),
+  activities: getAllActivities(state),
 });
 export default connect(mapStateToProps)(SidePanel);

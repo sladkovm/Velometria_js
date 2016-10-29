@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import React from 'react';
+import { ListGroupItem } from 'react-bootstrap';
 
 
 const ActivityPanel = ({ activity }) => {
@@ -12,7 +13,10 @@ const ActivityPanel = ({ activity }) => {
         color: 'red',
       }}
     >
-      <p>{activity.name}</p>
+      <ListGroupItem>
+        <p>{activity.name}</p>
+
+      </ListGroupItem>
     </Link>
   );
 };

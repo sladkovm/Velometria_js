@@ -51,7 +51,7 @@ const AreaPlot = ({ x, y, xScale, yScale, stroke = "black" }) => {
           <stop offset={offset.tempoStop} stopColor={COLORS.yellow} />
           <stop offset={offset.tempoStart} stopColor={COLORS.yellow} />
           <stop offset={offset.inBlue} stopColor={COLORS.skyblue} />
-          <stop offset={offset.recovery} stopColor={COLORS.skyblue} />
+          <stop offset={offset.recovery} stopColor={COLORS.white} />
         </linearGradient>
       </defs>
       <path

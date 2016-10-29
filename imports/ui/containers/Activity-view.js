@@ -4,20 +4,20 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { SimpleStreamsPlot } from '../d3-components/simple-streams-plot';
 
 
-const renderPower = (stream) => {
-  return stream[4].data.map(d => d);
-};
-
-const renderDistance = (stream) => {
-  return stream[1].data.map(d => d);
+const reformatStream = (stream) => {
+  return _.mapKeys(stream, (value, key) => {
+    if (value.type) return value.type;
+    return key;
+  });
 };
 
 // The actual activiies data will be received via store
 const ActivityView = ({ params, id, activity, stream }) => {
-  console.log(stream);
+  const data = reformatStream(stream);
   return (
     <div>
     {
@@ -33,8 +33,8 @@ const ActivityView = ({ params, id, activity, stream }) => {
       <p>Loading stream</p> :
       <div>
         <SimpleStreamsPlot
-          watts={renderPower(stream)}
-          distance={renderDistance(stream)}
+          watts={data.watts.data}
+          distance={data.distance.data}
         />
       </div>
     }

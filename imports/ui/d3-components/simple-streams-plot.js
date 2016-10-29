@@ -28,8 +28,8 @@ export class SimpleStreamsPlot extends Component {
       bottomMargin: 50,
       leftMargin: 100,
       rightMargin: 20,
-      xAxisOffset: 20,
-      yAxisOffset: 20,
+      xAxisOffset: 0,
+      yAxisOffset: 0,
       xTextOffset: 10,
       yTextOffset: 20,
       tickLength: 5,
@@ -74,6 +74,7 @@ export class SimpleStreamsPlot extends Component {
             y={watts}
             xScale={xScale}
             yScale={yScale}
+            stroke="none"
           />
           <AxisX
             ticks={[minDistance, maxDistance]}

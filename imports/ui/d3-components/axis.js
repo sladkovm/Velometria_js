@@ -13,25 +13,7 @@ export const AxisX = ({ ticks, xScale, chartProps }) => {
         stroke="grey"
         strokeWidth="1px"
       />
-      {ticks.map(t => (
-        <text
-          x={xScale(t)}
-          y={y0 + chartProps.yTextOffset}
-          textAnchor="middle"
-        >
-          {t}
-        </text>
-      ))}
-      {ticks.map(t => (
-        <line
-          x1={xScale(t)}
-          y1={y0}
-          x2={xScale(t)}
-          y2={y0 + chartProps.tickLength}
-          stroke="grey"
-          strokeWidth="1px"
-        />
-      ))}
+
     </g>
   );
 };
@@ -39,7 +21,6 @@ export const AxisX = ({ ticks, xScale, chartProps }) => {
 
 export const AxisY = ({ ticks, yScale, chartProps }) => {
   const x0 = chartProps.leftMargin - chartProps.yAxisOffset;
-  const dY = 5; // Text offset in pixels
   return (
     <g>
       <line
@@ -50,25 +31,6 @@ export const AxisY = ({ ticks, yScale, chartProps }) => {
         stroke="grey"
         strokeWidth="1px"
       />
-      {ticks.map(t => (
-        <text
-          x={x0 - chartProps.xTextOffset}
-          y={yScale(t) + dY}
-          textAnchor="end"
-        >
-          {t}
-        </text>
-      ))}
-      {ticks.map(t => (
-        <line
-          x1={x0}
-          y1={yScale(t)}
-          x2={x0 - chartProps.tickLength}
-          y2={yScale(t)}
-          stroke="grey"
-          strokeWidth="1px"
-        />
-      ))}
     </g>
   );
 };

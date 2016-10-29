@@ -4,6 +4,8 @@ import * as d3 from 'd3';
 import LinePlot from './line-plot.js';
 import AreaPlot from './area-plot.js';
 import { AxisX, AxisY } from './axis.js';
+import { TickLabelsX, TickLabelsY } from './tick-labels.js';
+import { TicksX, TicksY } from './ticks.js';
 
 
 export class SimpleStreamsPlot extends Component {
@@ -33,6 +35,7 @@ export class SimpleStreamsPlot extends Component {
       xTextOffset: 10,
       yTextOffset: 20,
       tickLength: 5,
+      textAxisYoffset: 5,
     };
 
     const minWatts = d3.min(watts);
@@ -48,26 +51,11 @@ export class SimpleStreamsPlot extends Component {
             .domain([minWatts, maxWatts])
             .range([chartProps.height - chartProps.bottomMargin, chartProps.topMargin]);
 
+    const ticksX = [minDistance, maxDistance];
+    const ticksY = [minWatts, 290, maxWatts];
+
     return (
       <div>
-        <svg width={chartProps.width} height={chartProps.height}>
-          <LinePlot
-            x={distance}
-            y={watts}
-            xScale={xScale}
-            yScale={yScale}
-          />
-          <AxisX
-            ticks={[minDistance, maxDistance]}
-            xScale={xScale}
-            chartProps={chartProps}
-          />
-          <AxisY
-            ticks={[minWatts, maxWatts]}
-            yScale={yScale}
-            chartProps={chartProps}
-          />
-        </svg>
         <svg width={chartProps.width} height={chartProps.height}>
           <AreaPlot
             x={distance}
@@ -76,13 +64,25 @@ export class SimpleStreamsPlot extends Component {
             yScale={yScale}
             stroke="none"
           />
-          <AxisX
-            ticks={[minDistance, maxDistance]}
+          <TicksX
+            ticks={ticksX}
             xScale={xScale}
             chartProps={chartProps}
           />
-          <AxisY
-            ticks={[minWatts, maxWatts]}
+          <TicksY
+            ticks={ticksY}
+            yScale={yScale}
+            chartProps={chartProps}
+          />
+          <TickLabelsX
+            ticks={ticksX}
+            tickLabels={ticksX.map(t => Math.round(t/1000))}
+            xScale={xScale}
+            chartProps={chartProps}
+          />
+          <TickLabelsY
+            ticks={ticksY}
+            tickLabels={ticksY}
             yScale={yScale}
             chartProps={chartProps}
           />

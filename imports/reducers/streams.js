@@ -7,7 +7,7 @@ import { RECEIVE_STREAMS } from '../actions/receiveStreams';
 const byId = (state = {}, action) => {
   switch (action.type) {
     case RECEIVE_STREAMS:
-      console.log(action.response)
+      // console.log(action.response)
       return Object.assign({}, action.response.entities.streams);
     default:
       return state;

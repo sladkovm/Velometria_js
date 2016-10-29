@@ -14,13 +14,13 @@ import receiveStreams from '../../actions/receiveStreams';
 
 class AppLayout extends Component {
   componentDidMount() {
-    console.log('componentDidMount')
+    // console.log('componentDidMount')
     this.storeActivities();
     this.storeStreams();
   }
 
   componentDidUpdate() {
-    console.log('componentDidUpdate')
+    // console.log('componentDidUpdate')
     this.storeActivities();
     this.storeStreams();
   }

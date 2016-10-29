@@ -7,8 +7,17 @@ import { connect } from 'react-redux';
 import { SimpleStreamsPlot } from '../d3-components/simple-streams-plot';
 
 
+const renderPower = (stream) => {
+  return stream[4].data.map(d => d);
+};
+
+const renderDistance = (stream) => {
+  return stream[1].data.map(d => d);
+};
+
 // The actual activiies data will be received via store
 const ActivityView = ({ params, id, activity, stream }) => {
+  console.log(stream);
   return (
     <div>
     {
@@ -18,12 +27,16 @@ const ActivityView = ({ params, id, activity, stream }) => {
           Activity View
           <h2>{params.id}</h2>
           <h2>{activity.name}</h2>
-          <SimpleStreamsPlot />
         </Panel>
     }
     {!stream ?
       <p>Loading stream</p> :
-      <p>{stream._id}</p>
+      <div>
+        <SimpleStreamsPlot
+          watts={renderPower(stream)}
+          distance={renderDistance(stream)}
+        />
+      </div>
     }
     </div>
   );

@@ -19,7 +19,7 @@ export const TickLabelsX = ({ ticks, tickLabels, xScale, chartProps }) => {
 };
 
 export const TickLabelsY = ({ ticks, tickLabels, yScale, chartProps }) => {
-  const x0 = chartProps.leftMargin - chartProps.yAxisOffset;
+  const x0 = chartProps.leftMargin - chartProps.yAxisOffset - chartProps.histogramWidth;
   return (
     <g>
       {ticks.map((t, i) => (

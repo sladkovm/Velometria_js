@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import * as d3 from 'd3';
 
-import LinePlot from './line-plot.js';
+// import LinePlot from './line-plot.js';
 import AreaPlot from './area-plot.js';
-import { AxisX, AxisY } from './axis.js';
+// import { AxisX, AxisY } from './axis.js';
 import { TickLabelsX, TickLabelsY } from './tick-labels.js';
 import { TicksX, TicksY } from './ticks.js';
+import { HistogramY } from './histogram.js';
+import { ATHLETE} from './athlete.js';
 
 
 export class SimpleStreamsPlot extends Component {
@@ -26,9 +28,9 @@ export class SimpleStreamsPlot extends Component {
     const chartProps = {
       width: 720,
       height: 200,
-      topMargin: 30,
+      topMargin: 10,
       bottomMargin: 50,
-      leftMargin: 100,
+      leftMargin: 200,
       rightMargin: 20,
       xAxisOffset: 0,
       yAxisOffset: 0,
@@ -36,6 +38,8 @@ export class SimpleStreamsPlot extends Component {
       yTextOffset: 20,
       tickLength: 5,
       textAxisYoffset: 5,
+      histogramWidth: 100,
+      histogramPadding: 20,
     };
 
     const minWatts = d3.min(watts);
@@ -52,7 +56,11 @@ export class SimpleStreamsPlot extends Component {
             .range([chartProps.height - chartProps.bottomMargin, chartProps.topMargin]);
 
     const ticksX = [minDistance, maxDistance];
-    const ticksY = [minWatts, 290, maxWatts];
+    const ticksY = [ATHLETE.Z2*ATHLETE.FTP,
+                    ATHLETE.Z3*ATHLETE.FTP,
+                    ATHLETE.Z4*ATHLETE.FTP,
+                    ATHLETE.Z5*ATHLETE.FTP,
+                    maxWatts];
 
     return (
       <div>
@@ -82,7 +90,12 @@ export class SimpleStreamsPlot extends Component {
           />
           <TickLabelsY
             ticks={ticksY}
-            tickLabels={ticksY}
+            tickLabels={ticksY.map(t => Math.round(t))}
+            yScale={yScale}
+            chartProps={chartProps}
+          />
+          <HistogramY
+            y={watts}
             yScale={yScale}
             chartProps={chartProps}
           />

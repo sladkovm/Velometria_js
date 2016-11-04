@@ -1,3 +1,9 @@
+/** @file - AxisX and AxisY components definition
+* @param {array} ticks - numerical array of ticks positions in it's natural units
+* @param {Object} xScale, yScale - d3.scaleLinear object
+* @param {Object} charProps - properties of the chart
+*/
+
 import React from 'react';
 import * as d3 from 'd3';
 

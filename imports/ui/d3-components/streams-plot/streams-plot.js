@@ -4,13 +4,13 @@ import * as d3 from 'd3';
 // import LinePlot from './line-plot.js';
 import AreaPlot from './area-plot.js';
 // import { AxisX, AxisY } from './axis.js';
-import { TickLabelsX, TickLabelsY } from './tick-labels.js';
-import { TicksX, TicksY } from './ticks.js';
+import { TickLabelsX, TickLabelsY } from '../generic/tick-labels.js';
+import { TicksX, TicksY } from '../generic/ticks.js';
 import { HistogramY } from './histogram.js';
-import { ATHLETE} from './athlete.js';
+import { ATHLETE } from '../../../api/vm-athletes/athlete.js';
 
 
-export class SimpleStreamsPlot extends Component {
+export class StreamsPlot extends Component {
   constructor (props) {
     super(props);
   }
@@ -28,8 +28,8 @@ export class SimpleStreamsPlot extends Component {
     const chartProps = {
       width: 720,
       height: 200,
-      topMargin: 10,
-      bottomMargin: 50,
+      topMargin: 5,
+      bottomMargin: 30,
       leftMargin: 200,
       rightMargin: 20,
       xAxisOffset: 0,
@@ -56,21 +56,21 @@ export class SimpleStreamsPlot extends Component {
             .range([chartProps.height - chartProps.bottomMargin, chartProps.topMargin]);
 
     const ticksX = [minDistance, maxDistance];
-    const ticksY = [ATHLETE.Z2*ATHLETE.FTP,
-                    ATHLETE.Z3*ATHLETE.FTP,
-                    ATHLETE.Z4*ATHLETE.FTP,
-                    ATHLETE.Z5*ATHLETE.FTP,
+    const ticksY = [ATHLETE.Z2 * ATHLETE.FTP,
+                    ATHLETE.Z4 * ATHLETE.FTP,
+                    ATHLETE.Z5 * ATHLETE.FTP,
                     maxWatts];
 
     return (
       <div>
         <svg width={chartProps.width} height={chartProps.height}>
           <AreaPlot
-            x={distance}
-            y={watts}
+            xArray={distance}
+            yArray={watts}
             xScale={xScale}
             yScale={yScale}
             stroke="none"
+            gradient
           />
           <TicksX
             ticks={ticksX}
@@ -84,7 +84,7 @@ export class SimpleStreamsPlot extends Component {
           />
           <TickLabelsX
             ticks={ticksX}
-            tickLabels={ticksX.map(t => Math.round(t/1000))}
+            tickLabels={ticksX.map(t => Math.round(t / 1000))}
             xScale={xScale}
             chartProps={chartProps}
           />
@@ -109,7 +109,7 @@ export class SimpleStreamsPlot extends Component {
   }
 }
 
-SimpleStreamsPlot.propTypes = {
+StreamsPlot.propTypes = {
   watts: PropTypes.array,
   distance: PropTypes.array,
 };

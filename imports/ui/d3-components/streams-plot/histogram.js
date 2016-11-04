@@ -1,7 +1,8 @@
 import React from 'react';
+import _ from 'lodash';
 import * as d3 from 'd3';
-import { LinearGradient, powerOffsets } from './linear-gradient.js';
-import { COLORS } from './colors.js';
+import { ZONES_COLORS } from '../../styles/colors.js';
+import { zonesValuesPower, zonesValuesHR } from '../../../api/vm-athletes/athlete.js';
 
 
 const calcNrBins = (y, yWidth = 20) => {
@@ -27,10 +28,9 @@ export const HistogramY = ({ y, yScale, chartProps }) => {
                   .domain([d3.min(binsLength), d3.max(binsLength)])
                   .range([0, chartProps.histogramWidth - chartProps.histogramPadding]);
 
-  console.log(powerOffsets(y))
   const colorScale = d3.scaleLinear()
-            .domain(powerOffsets(y))
-            .range([COLORS.red, COLORS.red, COLORS.grey, COLORS.grey, COLORS.skyblue, COLORS.white]);
+            .domain(_.values(zonesValuesPower(y)))
+            .range(_.values(ZONES_COLORS));
 
 
   return (

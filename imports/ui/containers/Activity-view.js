@@ -5,14 +5,15 @@ import React from 'react';
 import { Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { SimpleStreamsPlot } from '../d3-components/simple-streams-plot';
+import { StreamsPlot } from '../d3-components/streams-plot/streams-plot';
 
 
 const reformatStream = (stream) => {
-  return _.mapKeys(stream, (value, key) => {
+  return (_.mapKeys(stream, (value, key) => {
     if (value.type) return value.type;
     return key;
-  });
+  })
+);
 };
 
 // The actual activiies data will be received via store
@@ -32,7 +33,7 @@ const ActivityView = ({ params, id, activity, stream }) => {
     {!stream ?
       <p>Loading stream</p> :
       <div>
-        <SimpleStreamsPlot
+        <StreamsPlot
           watts={data.watts.data}
           distance={data.distance.data}
         />

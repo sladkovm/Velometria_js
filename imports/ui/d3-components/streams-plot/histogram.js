@@ -2,25 +2,26 @@ import React from 'react';
 import _ from 'lodash';
 import * as d3 from 'd3';
 import { ZONES_COLORS } from '../../styles/colors.js';
-import { zonesValuesPower, zonesValuesHR } from '../../../api/vm-athletes/athlete.js';
+import { zonesValuesPower, zonesValuesHR } from '../../../api/vm-athletes/vm-athlete.js';
+import { v4 } from 'uuid';
 
-
-const calcNrBins = (y, yWidth = 20) => {
+/** @returns - number of bins to meet @param {double} - bin width */
+const calcNrBins = (y, binWidth) => {
   const minY = d3.min(y);
   const maxY = d3.max(y);
-  const minN = Math.round(minY / yWidth);
-  const maxN = Math.round(maxY / yWidth) + 1;
-  const nTicks = maxN - minN;
-  return nTicks;
+  const minN = Math.round(minY / binWidth);
+  const maxN = Math.round(maxY / binWidth) + 1;
+  const nBins = maxN - minN;
+  return nBins;
 };
 
 
-export const HistogramY = ({ y, yScale, chartProps }) => {
+export const HistogramY = ({ y, yScale, chartProps, binWidth = 20 }) => {
   const x0 = chartProps.leftMargin - chartProps.histogramWidth;
-  const nTicks = calcNrBins(y, 20);
+  const nBins = calcNrBins(y, binWidth);
   const histogram = d3.histogram()
           .domain(yScale.domain())
-          .thresholds(yScale.ticks(nTicks));
+          .thresholds(yScale.ticks(nBins));
   const bins = histogram(y);
   const binsLength = bins.map((bin) => bin.length);
   // xScale for histogram must be defined in terms of length of the bin
@@ -43,7 +44,16 @@ export const HistogramY = ({ y, yScale, chartProps }) => {
         const yPos = y0 - dy;
         const width = xScale(bin.length);
         const height = dy;
-        return <rect x={xPos} y={yPos} width={width} height={height} fill={colorScale(bin.x0)} />;
+        return (
+          <rect
+            key={v4()}
+            x={xPos}
+            y={yPos}
+            width={width}
+            height={height}
+            fill={colorScale(bin.x0)}
+          />
+        );
       })}
     </g>
   );

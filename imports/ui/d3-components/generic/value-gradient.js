@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { ZONES_COLORS } from '../../styles/colors.js';
-import { zonesOffsetsPower, zonesOffsetsHR } from '../../../api/vm-athletes/athlete.js';
+import { zonesOffsetsPower, zonesOffsetsHR } from '../../../api/vm-athletes/vm-athlete.js';
 
 
 export const ValueGradient = ({ y, valueType = 'watts' }) => {

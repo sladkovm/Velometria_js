@@ -5,20 +5,21 @@ import React from 'react';
 import { Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { StreamsPlot } from '../d3-components/streams-plot/streams-plot';
+import PowerPlot from '../d3-components/streams-plot/power-plot';
+import SpeedPlot from '../d3-components/streams-plot/speed-plot';
 
-
-const reformatStream = (stream) => {
-  return (_.mapKeys(stream, (value, key) => {
+/** @returns object with key = stream_name*/
+const reformatStream = (stream) => (
+  _.mapKeys(stream, (value, key) => {
     if (value.type) return value.type;
     return key;
   })
 );
-};
 
 // The actual activiies data will be received via store
 const ActivityView = ({ params, id, activity, stream }) => {
   const data = reformatStream(stream);
+  // console.log(data.altitude.data);
   return (
     <div>
     {
@@ -33,7 +34,13 @@ const ActivityView = ({ params, id, activity, stream }) => {
     {!stream ?
       <p>Loading stream</p> :
       <div>
-        <StreamsPlot
+        <SpeedPlot
+          altitude={data.altitude.data}
+          speed={data.velocity_smooth.data}
+          cadence={data.cadence.data}
+          distance={data.distance.data}
+        />
+        <PowerPlot
           watts={data.watts.data}
           distance={data.distance.data}
         />

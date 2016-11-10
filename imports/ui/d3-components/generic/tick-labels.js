@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 } from 'uuid';
 
 
 export const TickLabelsX = ({ ticks, tickLabels, xScale, chartProps }) => {
@@ -7,6 +8,7 @@ export const TickLabelsX = ({ ticks, tickLabels, xScale, chartProps }) => {
     <g>
       {ticks.map((t, i) => (
         <text
+          key={v4()}
           x={xScale(t)}
           y={y0 + chartProps.yTextOffset}
           textAnchor="middle"
@@ -24,6 +26,7 @@ export const TickLabelsY = ({ ticks, tickLabels, yScale, chartProps }) => {
     <g>
       {ticks.map((t, i) => (
         <text
+          key={v4()}
           x={x0 - chartProps.xTextOffset}
           y={yScale(t) + chartProps.textAxisYoffset}
           textAnchor="end"

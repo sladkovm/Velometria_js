@@ -11,6 +11,7 @@ import { min as d3min } from 'd3';
 import { area as d3area } from 'd3-shape';
 import _ from 'lodash';
 import { ValueGradient } from '../generic/value-gradient.js';
+import { COLORS } from '../../styles/colors.js';
 
 
 const AreaPlot = ({
@@ -30,7 +31,7 @@ const AreaPlot = ({
           .x((d) => xScale(d.x))
           .y1((d) => yScale(d.y));
   // process gradient data
-  const fill = gradient ? `url(#${valueType}Gradient)` : 'grey';
+  const fill = gradient ? `url(#${valueType}Gradient)` : COLORS.grey;
   return (
     <g>
       <defs>

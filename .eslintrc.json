@@ -7,9 +7,16 @@
         "react",
         "jsx-a11y",
         "import",
-        "meteor"
+        "meteor",
+        "mocha"
     ],
+    "env": {
+      "browser": true,
+      "node": true,
+      "mocha": true
+    },
     "rules": {
+      "func-names": 0,
       "import/no-extraneous-dependencies": 0,
       "import/prefer-default-export": 0,
       "react/jsx-filename-extension": 0,

@@ -1,0 +1,16 @@
+export const CHART_PROPS = {
+  width: 720,
+  height: 200,
+  topMargin: 5,
+  bottomMargin: 30,
+  leftMargin: 200,
+  rightMargin: 20,
+  xAxisOffset: 0,
+  yAxisOffset: 0,
+  xTextOffset: 10,
+  yTextOffset: 20,
+  tickLength: 5,
+  textAxisYoffset: 5,
+  histogramWidth: 100,
+  histogramPadding: 20,
+};

@@ -2,27 +2,29 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { TicksX, TicksY } from './ticks';
+import { TickLabelsX, TickLabelsY } from './tick-labels';
 
 
-describe('ticks.js', function () {
+describe('tick-labels.js', function () {
   if (Meteor.isServer) return;
 
-  describe('TicksX', function () {
+  describe('TickLabelsX', function () {
     // create test data
     const ticks = [0, 1];
+    const tickLabels = ticks;
     const xScale = t => t;
     const chartProps = {
       height: 100,
       bottomMargin: 20,
       xAxisOffset: 10,
-      tickLength: 5,
+      yTextOffset: 5,
     };
 
     // Challow render the Component
     const actual = shallow(
-      <TicksX
+      <TickLabelsX
         ticks={ticks}
+        tickLabels={tickLabels}
         xScale={xScale}
         chartProps={chartProps}
       />
@@ -37,38 +39,39 @@ describe('ticks.js', function () {
       const expected = ticks.length;
       expect(actual.node.props.children.length).to.be.equal(expected);
     });
-    it('Each child of <g> has a type <line> with correct y1, y2, x1, x2', function () {
-      const expectedType = 'line';
-      const expectedY1 = (chartProps.height - chartProps.bottomMargin) + chartProps.xAxisOffset;
-      const expectedY2 = expectedY1 + chartProps.tickLength;
+    it('Each child of <g> has a type <text> with correct x, y', function () {
+      const expectedType = 'text';
+      const expectedY = (chartProps.height - chartProps.bottomMargin)
+                        + chartProps.xAxisOffset + chartProps.yTextOffset;
       const expectedX = ticks.map(t => xScale(t));
 
       actual.node.props.children.forEach((c, i) => {
         expect(c.type).to.be.equal(expectedType);
-        expect(c.props.y1).to.be.equal(expectedY1);
-        expect(c.props.y2).to.be.equal(expectedY2);
-        expect(c.props.x1).to.be.equal(expectedX[i]);
-        expect(c.props.x2).to.be.equal(expectedX[i]);
+        expect(c.props.y).to.be.equal(expectedY);
+        expect(c.props.x).to.be.equal(expectedX[i]);
       });
     });
   });
 
 
-  describe('TicksY', function () {
+  describe('TickLabelsY', function () {
     // create test data
     const ticks = [0, 1];
+    const tickLabels = ticks;
     const yScale = t => t;
     const chartProps = {
       leftMargin: 100,
       yAxisOffset: 10,
       histogramWidth: 50,
-      tickLength: 5,
+      xTextOffset: 5,
+      textAxisYoffset: 5,
     };
 
     // Challow render the Component
     const actual = shallow(
-      <TicksY
+      <TickLabelsY
         ticks={ticks}
+        tickLabels={tickLabels}
         yScale={yScale}
         chartProps={chartProps}
       />
@@ -83,18 +86,16 @@ describe('ticks.js', function () {
       const expected = ticks.length;
       expect(actual.node.props.children.length).to.be.equal(expected);
     });
-    it('Each child of <g> has a type <line> with correct y1, y2, x1, x2', function () {
-      const expectedType = 'line';
-      const expectedX1 = chartProps.leftMargin - chartProps.yAxisOffset - chartProps.histogramWidth;
-      const expectedX2 = expectedX1 - chartProps.tickLength;
-      const expectedY = ticks.map(t => yScale(t));
+    it('Each child of <g> has a type <text> with correct x, y', function () {
+      const expectedType = 'text';
+      const expectedX = chartProps.leftMargin - chartProps.yAxisOffset
+                      - chartProps.histogramWidth - chartProps.xTextOffset;
+      const expectedY = ticks.map(t => yScale(t) + chartProps.textAxisYoffset);
 
       actual.node.props.children.forEach((c, i) => {
         expect(c.type).to.be.equal(expectedType);
-        expect(c.props.x1).to.be.equal(expectedX1);
-        expect(c.props.x2).to.be.equal(expectedX2);
-        expect(c.props.y1).to.be.equal(expectedY[i]);
-        expect(c.props.y2).to.be.equal(expectedY[i]);
+        expect(c.props.x).to.be.equal(expectedX);
+        expect(c.props.y).to.be.equal(expectedY[i]);
       });
     });
   });

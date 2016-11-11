@@ -16,6 +16,7 @@
       "mocha": true
     },
     "rules": {
+      "no-mixed-operators": 0,
       "func-names": 0,
       "prefer-arrow-callback": 0,
       "import/no-extraneous-dependencies": 0,

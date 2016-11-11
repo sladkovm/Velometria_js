@@ -3,7 +3,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { ListGroup } from 'react-bootstrap';
-import ActivityPanel from '../components/ActivityPanel.js';
+import ActivityPanelItem from '../components/activity-panel-item.js';
 import { Loading } from '../components/Loading';
 import { getAllActivities } from '../../reducers/activities';
 
@@ -15,7 +15,7 @@ class SidePanel extends Component {
       <Loading /> :
       <ListGroup>
         {activities.map((activity) => (
-          <ActivityPanel
+          <ActivityPanelItem
             key={activity.id}
             activity={activity}
           />

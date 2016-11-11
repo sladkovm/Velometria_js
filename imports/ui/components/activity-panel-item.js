@@ -3,7 +3,7 @@ import React from 'react';
 import { ListGroupItem } from 'react-bootstrap';
 
 
-const ActivityPanel = ({ activity }) => {
+const ActivityPanelItem = ({ activity }) => {
   // console.log(activity.name)
   return (
     <Link
@@ -22,4 +22,4 @@ const ActivityPanel = ({ activity }) => {
 };
 
 
-export default ActivityPanel;
+export default ActivityPanelItem;

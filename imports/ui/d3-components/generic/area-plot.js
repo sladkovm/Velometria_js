@@ -12,7 +12,7 @@ const AreaPlot = ({
   yArray,
   xScale,
   yScale,
-  colorStops,
+  stopColors,
   gradient = false,
   shadeColor = 'grey',
   stroke = 'black',
@@ -25,11 +25,17 @@ const AreaPlot = ({
           .x((d) => xScale(d.x))
           .y1((d) => yScale(d.y));
   // process gradient data
-  const fill = gradient ? 'url(#valueGradientid)' : shadeColor;
+  // console.log(xScale.range())
+  // console.log(yScale.range())
+  const fill = gradient ? 'url(#value-gradient-id)' : shadeColor;
   return (
     <g>
       <defs>
-        <ValueGradient colorStops={colorStops} />
+        <ValueGradient
+          stopColors={stopColors}
+          id={'value-gradient-id'}
+          scale={yScale}
+        />
       </defs>
       <path
         d={area(data)}

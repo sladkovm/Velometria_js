@@ -12,7 +12,7 @@ describe('area-plot.js', function () {
   const yArray = [0, 1, 2, 3, 4, 5];
   const xScale = t => t;
   const yScale = t => t;
-  const colorStops = [
+  const stopColors = [
     { offset: 100, color: 'red' },
     { offset: 80, color: 'red' },
     { offset: 60, color: 'grey' },
@@ -26,24 +26,21 @@ describe('area-plot.js', function () {
       yArray={yArray}
       xScale={xScale}
       yScale={yScale}
-      colorStops={colorStops}
+      stopColors={stopColors}
     />
   );
   // DOM Verification
   it('Renders <g> node', function () {
-    const expected = 'g';
-    const actual = testObject.node.type;
-    expect(actual).to.be.equal(expected);
+    const actual = testObject.node;
+    expect(actual.type).to.be.equal('g');
   });
   it('has <defs> as a first child', function () {
-    const expected = 'defs';
-    const actual = testObject.node.props.children[0].type;
-    expect(actual).to.be.equal(expected);
+    const actual = testObject.node.props.children[0];
+    expect(actual.type).to.be.equal('defs');
   });
   it('has <path> as a second child', function () {
-    const expected = 'path';
-    const actual = testObject.node.props.children[1].type;
-    expect(actual).to.be.equal(expected);
+    const actual = testObject.node.props.children[1];
+    expect(actual.type).to.be.equal('path');
   });
   it('has fill set to grey if gradient is not specified', function () {
     const expected = 'grey';
@@ -51,7 +48,7 @@ describe('area-plot.js', function () {
     expect(actual).to.be.equal(expected);
   });
   it('has fill set to gradient if gradient is well specified', function () {
-    const expected = 'url(#valueGradientid)';
+    const expected = 'url(#value-gradient-id)';
     const testObjectGradient = shallow(
       <AreaPlot
         xArray={xArray}
@@ -59,7 +56,7 @@ describe('area-plot.js', function () {
         xScale={xScale}
         yScale={yScale}
         gradient
-        colorStops={colorStops}
+        stopColors={stopColors}
       />
     );
     const actual = testObjectGradient.node.props.children[1].props.fill;

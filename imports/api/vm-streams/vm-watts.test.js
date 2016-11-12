@@ -1,49 +1,82 @@
 import { expect } from 'chai';
+import { scaleLinear } from 'd3-scale';
+import { COLORS_VEC } from '../../ui/styles/colors';
 import * as vm from './vm-watts.js';
-import { min as d3min, max as d3max} from 'd3';
 
 
 describe('vm-watts.js', function () {
-  it('returns undefined if input is undefined', function () {
-    const actual = vm.watts();
-    const expected = undefined;
-    expect(actual).to.be.equal(expected);
-  });
-  it('return object if input is defined', function () {
-    const actual = typeof vm.watts([0, 1, 2, 3]);
-    const expected = 'object';
-    expect(actual).to.be.equal(expected);
-  });
+  // Test data
+  const stream = [0, 1, 2, 3, 4, 5];
+  const zones = {
+    anaerobic: 4,
+    threshold: 3,
+    tempo: 2,
+    endurance: 1,
+  };
+  const colors = ['red', 'red', 'grey', 'grey', 'blue', 'white'].reverse();
+  const stopColors = [
+    { offset: 100, stopColor: 'red' },
+    { offset: Math.round(100 * (1 - (5 - zones.anaerobic) / 5)), stopColor: 'red' },
+    { offset: Math.round(100 * (1 - (5 - zones.threshold) / 5)), stopColor: 'grey' },
+    { offset: Math.round(100 * (1 - (5 - zones.tempo) / 5)), stopColor: 'grey' },
+    { offset: Math.round(100 * (1 - (5 - zones.endurance) / 5)), stopColor: 'blue' },
+    { offset: 0, stopColor: 'white' },
+  ].reverse();
+  const scaleDomain = scaleLinear().domain([0, 5]);
+  // Verify
 
-  describe('and', function () {
-    // Test data
-    const data = [0, 1, 2, 3];
-    const watts = vm.watts(data);
-    // Verification
-    it('has propery min', function () {
-      const expected = 0;
-      const actual = watts.min;
-      expect(actual).to.be.equal(expected);
-    });
-    it('has propery max', function () {
-      const expected = 3;
-      const actual = watts.max;
-      expect(actual).to.be.equal(expected);
-    });
-    it('has an Array propery data', function () {
-      const expected = data;
-      const actual = watts.data;
+  describe('getStopColors(stream, zones, colors)', function () {
+    it('returns stopColors object', function () {
+      const actual = vm.getStopColors(stream, zones, colors);
+      const expected = stopColors;
       expect(actual).be.deep.equal(expected);
     });
-    it('has an Array propery ticks', function () {
-      const actual = watts;
-      expect(actual).to.have.property('ticks');
-      expect(actual.ticks).to.be.an('Array');
-    });
-    it('has a function propery yScaleDomain', function () {
-      const actual = watts;
-      expect(actual).to.have.property('yScaleDomain');
-      expect(actual.yScaleDomain).to.be.a('function');
+  });
+
+
+  describe('vmWatts(stream, zones, colors)', function () {
+    it('returns object with fields: min, max, data, ticks, ticksLabels, scaleDomain, colorStops',
+      function () {
+        const actual = vm.vmWatts(stream, zones, colors);
+        const expected = {
+          min: 0,
+          max: 5,
+          data: stream,
+          ticks: stream.map(t => Math.round(t)),
+          tickLabels: stream.map(t => Math.round(t)),
+          scaleDomain,
+          stopColors,
+        };
+        expect(actual.min).to.be.equal(expected.min);
+        expect(actual.max).to.be.equal(expected.max);
+        expect(actual.data).be.deep.equal(expected.data);
+        expect(actual.ticks).be.deep.equal(expected.ticks);
+        expect(actual.tickLabels).be.deep.equal(expected.tickLabels);
+        expect(actual.scaleDomain.domain()).be.deep.equal(expected.scaleDomain.domain());
+        expect(actual.stopColors).be.deep.equal(expected.stopColors);
+      });
+    it('render with default colors',
+      function () {
+        const actual = vm.vmWatts(stream, zones);
+        const expected = {
+          min: 0,
+          max: 5,
+          data: stream,
+          ticks: stream.map(t => Math.round(t)),
+          tickLabels: stream.map(t => Math.round(t)),
+          scaleDomain,
+        };
+        expect(actual.min).to.be.equal(expected.min);
+        expect(actual.max).to.be.equal(expected.max);
+        expect(actual.data).be.deep.equal(expected.data);
+        expect(actual.ticks).be.deep.equal(expected.ticks);
+        expect(actual.tickLabels).be.deep.equal(expected.tickLabels);
+        expect(actual.scaleDomain.domain()).be.deep.equal(expected.scaleDomain.domain());
+      });
+    it('returns undefined is stream is undefined', function () {
+      const actual = vm.vmWatts(undefined, zones, colors);
+      const expected = undefined;
+      expect(actual).to.be.equal(expected);
     });
   });
 });

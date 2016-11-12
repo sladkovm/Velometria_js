@@ -7,15 +7,11 @@ export const COLORS = {
   grey: '#C3C6C7',
 }; // https://color.adobe.com/Flat-UI-color-theme-2469224/
 
-/** @constant - defines zones-2-color mapping */
-export const ZONES_COLORS = {
-  anaerobic: COLORS.red,
-  threshold: COLORS.red,
-  tempoStop: COLORS.grey,
-  tempoStart: COLORS.grey,
-  endurance: COLORS.blue,
-  recovery: COLORS.white,
-};
+export const COLORS_VEC =
+  [COLORS.red, COLORS.red, COLORS.grey, COLORS.grey, COLORS.blue, COLORS.white].reverse();
+//
+// export const COLORS_VEC =
+//   ['red', 'red', 'grey', 'grey', 'blue', 'white'];
 
 //
 // export const COLORS = {

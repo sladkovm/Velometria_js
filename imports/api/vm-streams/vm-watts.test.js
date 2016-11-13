@@ -1,12 +1,14 @@
 import { expect } from 'chai';
 import { scaleLinear } from 'd3-scale';
 import { COLORS_VEC } from '../../ui/styles/colors';
-import * as vm from './vm-watts.js';
+import { getStopColors, vmWatts } from './vm-watts.js';
 
 
 describe('vm-watts.js', function () {
   // Test data
-  const stream = [0, 1, 2, 3, 4, 5];
+  const stream = {
+    data: [0, 1, 2, 3, 4, 5],
+  };
   const zones = {
     anaerobic: 4,
     threshold: 3,
@@ -27,7 +29,7 @@ describe('vm-watts.js', function () {
 
   describe('getStopColors(stream, zones, colors)', function () {
     it('returns stopColors object', function () {
-      const actual = vm.getStopColors(stream, zones, colors);
+      const actual = getStopColors(stream.data, zones, colors);
       const expected = stopColors;
       expect(actual).be.deep.equal(expected);
     });
@@ -37,13 +39,13 @@ describe('vm-watts.js', function () {
   describe('vmWatts(stream, zones, colors)', function () {
     it('returns object with fields: min, max, data, ticks, ticksLabels, scaleDomain, colorStops',
       function () {
-        const actual = vm.vmWatts(stream, zones, colors);
+        const actual = vmWatts(stream, zones, colors);
         const expected = {
           min: 0,
           max: 5,
-          data: stream,
-          ticks: stream.map(t => Math.round(t)),
-          tickLabels: stream.map(t => Math.round(t)),
+          data: stream.data,
+          ticks: stream.data.map(t => Math.round(t)),
+          tickLabels: stream.data.map(t => Math.round(t)),
           scaleDomain,
           stopColors,
         };
@@ -57,13 +59,13 @@ describe('vm-watts.js', function () {
       });
     it('render with default colors',
       function () {
-        const actual = vm.vmWatts(stream, zones);
+        const actual = vmWatts(stream, zones);
         const expected = {
           min: 0,
           max: 5,
-          data: stream,
-          ticks: stream.map(t => Math.round(t)),
-          tickLabels: stream.map(t => Math.round(t)),
+          data: stream.data,
+          ticks: stream.data.map(t => Math.round(t)),
+          tickLabels: stream.data.map(t => Math.round(t)),
           scaleDomain,
         };
         expect(actual.min).to.be.equal(expected.min);
@@ -74,7 +76,7 @@ describe('vm-watts.js', function () {
         expect(actual.scaleDomain.domain()).be.deep.equal(expected.scaleDomain.domain());
       });
     it('returns undefined is stream is undefined', function () {
-      const actual = vm.vmWatts(undefined, zones, colors);
+      const actual = vmWatts(undefined, zones, colors);
       const expected = undefined;
       expect(actual).to.be.equal(expected);
     });

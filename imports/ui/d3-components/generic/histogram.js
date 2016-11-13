@@ -3,7 +3,7 @@ import _ from 'lodash';
 import * as d3 from 'd3';
 import { v4 } from 'uuid';
 import { COLORS_VEC } from '../../styles/colors.js';
-import { getAbsPowerZones } from '../../../api/vm-athletes/vm-athlete.js';
+import { getAbsPowerZones, getAbsHeartrateZones } from '../../../api/vm-athletes/vm-athlete.js';
 
 
 /** @returns - number of bins to meet @param {double} - bin width */
@@ -17,7 +17,17 @@ export const calcNrBins = (data, binWidth) => {
 };
 
 
-export const HistogramY = ({ data, yScale, chartProps, binWidth = 20 }) => {
+export const dataVector = (type, data) => {
+  if (type === 'watts') {
+    return [d3.min(data), ..._.values(getAbsPowerZones()).reverse(), d3.max(data)];
+  }
+  if (type === 'heartrate') {
+    return [d3.min(data), ..._.values(getAbsHeartrateZones()).reverse(), d3.max(data)];
+  }
+  return undefined;
+};
+
+export const HistogramY = ({ data, yScale, chartProps, type = 'watts', binWidth = 20 }) => {
   // Generate histogram object
   const nBins = calcNrBins(data, binWidth);
   const histogram = d3.histogram()
@@ -35,14 +45,12 @@ export const HistogramY = ({ data, yScale, chartProps, binWidth = 20 }) => {
                   .range([0, chartProps.histogramWidth - chartProps.histogramPadding]);
 
   // Generate color scale - color for each bin depending on the bin position
-  const powerVec = [d3.min(data), ..._.values(getAbsPowerZones()).reverse(), d3.max(data)];
+  const vec = dataVector(type, data);
   // console.log(powerVec)
   // console.log(COLORS_VEC)
   const colorScale = d3.scaleLinear()
-            .domain(powerVec)
+            .domain(vec)
             .range(COLORS_VEC);
-
-
   return (
     <g>
       {bins.map((bin) => {

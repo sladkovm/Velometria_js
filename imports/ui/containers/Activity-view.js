@@ -6,13 +6,16 @@ import { Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { vmWatts } from '../../api/vm-streams/vm-watts';
+import { vmHeartrate } from '../../api/vm-streams/vm-heartrate';
 import { vmDistance } from '../../api/vm-streams/vm-distance';
 import { vmAltitude } from '../../api/vm-streams/vm-altitude';
 import { vmCadence } from '../../api/vm-streams/vm-cadence';
 import { vmSpeed } from '../../api/vm-streams/vm-speed';
-import { getAbsPowerZones } from '../../api/vm-athletes/vm-athlete';
+import { getAbsPowerZones, getAbsHeartrateZones } from '../../api/vm-athletes/vm-athlete';
 import PowerPlot from '../d3-components/streams-plot/power-plot';
+import HeartratePlot from '../d3-components/streams-plot/heartrate-plot';
 import SpeedPlot from '../d3-components/streams-plot/speed-plot';
+import EmptyPlot from '../d3-components/streams-plot/empty-plot';
 // import SpeedPlot from '../d3-components/streams-plot/speed-plot';
 
 /** @returns object with key = stream_name*/
@@ -36,6 +39,7 @@ export const renderHeader = (id, activity) => {
 
 
 export const renderPower = (xData, yData) => {
+  if (!xData | !yData) return <EmptyPlot />;
   return (
     <PowerPlot
       xData={xData}
@@ -45,7 +49,19 @@ export const renderPower = (xData, yData) => {
 };
 
 
+export const renderHeartrate = (xData, yData) => {
+  if (!xData | !yData) return <EmptyPlot />;
+  return (
+    <HeartratePlot
+      xData={xData}
+      yData={yData}
+    />
+  );
+};
+
+
 const renderSpeed = (xData, altitude, speed, cadence) => {
+  if (!xData | !altitude | !speed | !cadence) return <EmptyPlot />;
   return (
     <SpeedPlot
       xData={xData}
@@ -59,7 +75,8 @@ const renderSpeed = (xData, altitude, speed, cadence) => {
 export const renderStream = (id, stream) => {
   if (!stream) return <h2>Loading {id}</h2>;
   const streamObject = objectifyStream(stream);
-  const powerData = vmWatts(streamObject.watts.data, getAbsPowerZones());
+  const powerData = vmWatts(streamObject.watts, getAbsPowerZones());
+  const heartrateData = vmHeartrate(streamObject.heartrate, getAbsHeartrateZones());
   const distanceData = vmDistance(streamObject.distance.data);
   const speedData = vmSpeed(streamObject.velocity_smooth.data);
   const altitudeData = vmAltitude(streamObject.altitude.data);
@@ -67,6 +84,7 @@ export const renderStream = (id, stream) => {
   return (
     <div>
       {renderPower(distanceData, powerData)}
+      {renderHeartrate(distanceData, heartrateData)}
       {renderSpeed(distanceData, altitudeData, speedData, cadenceData)}
     </div>
   );

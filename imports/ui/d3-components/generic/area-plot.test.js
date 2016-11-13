@@ -48,7 +48,7 @@ describe('area-plot.js', function () {
     expect(actual).to.be.equal(expected);
   });
   it('has fill set to gradient if gradient is well specified', function () {
-    const expected = 'url(#value-gradient-id)';
+    const expected = 'url(#value-gradient-)';
     const testObjectGradient = shallow(
       <AreaPlot
         xArray={xArray}

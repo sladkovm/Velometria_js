@@ -21,8 +21,9 @@ export const getStopColors = (stream, zones, colors = COLORS_VEC) => {
 
 export const vmWatts = (stream, zones, colors = COLORS_VEC) => {
   if (!stream) return undefined;
-  const min = d3min(stream);
-  const max = d3max(stream);
+  const data = stream.data;
+  const min = d3min(data);
+  const max = d3max(data);
   const scaleDomain = scaleLinear().domain([min, max]);
   const ticks = [min,
                   zones.endurance,
@@ -31,11 +32,11 @@ export const vmWatts = (stream, zones, colors = COLORS_VEC) => {
                   zones.anaerobic,
                   max].map(t => Math.round(t));
   const tickLabels = ticks;
-  const stopColors = getStopColors(stream, zones, colors);
+  const stopColors = getStopColors(data, zones, colors);
   return {
     min,
     max,
-    data: stream,
+    data,
     ticks,
     tickLabels,
     scaleDomain,

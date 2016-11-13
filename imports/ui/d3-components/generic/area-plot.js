@@ -16,6 +16,7 @@ const AreaPlot = ({
   gradient = false,
   shadeColor = 'grey',
   stroke = 'black',
+  id = '',
 }) => {
   // map input arrays into array of objects [{x: value, y: value}]
   const data = _.zipWith(xArray, yArray, (x, y) => ({ x, y }));
@@ -27,13 +28,13 @@ const AreaPlot = ({
   // process gradient data
   // console.log(xScale.range())
   // console.log(yScale.range())
-  const fill = gradient ? 'url(#value-gradient-id)' : shadeColor;
+  const fill = gradient ? `url(#value-gradient-${id})` : shadeColor;
   return (
     <g>
       <defs>
         <ValueGradient
           stopColors={stopColors}
-          id={'value-gradient-id'}
+          id={`value-gradient-${id}`}
           scale={yScale}
         />
       </defs>

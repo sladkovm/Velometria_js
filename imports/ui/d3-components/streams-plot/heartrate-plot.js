@@ -8,7 +8,7 @@ import { HistogramY } from '../generic/histogram.js';
 import { CHART_PROPS } from '../../styles/chart-props.js';
 
 
-const PowerPlot = ({ xData, yData }) => {
+const HeartratePlot = ({ xData, yData }) => {
   const xScale = xData.scaleDomain
           .range([CHART_PROPS.leftMargin, CHART_PROPS.width - CHART_PROPS.rightMargin]);
 
@@ -25,7 +25,7 @@ const PowerPlot = ({ xData, yData }) => {
         gradient
         stopColors={yData.stopColors}
         stroke="none"
-        id="watts"
+        id="hr"
       />
       <TicksX
         ticks={xData.ticks}
@@ -50,14 +50,15 @@ const PowerPlot = ({ xData, yData }) => {
         chartProps={CHART_PROPS}
       />
       <HistogramY
-        type="watts"
+        type="heartrate"
         data={yData.data}
         yScale={yScale}
         chartProps={CHART_PROPS}
+        binWidth={5}
       />
     </svg>
   );
 };
 
 
-export default PowerPlot;
+export default HeartratePlot;

@@ -4,6 +4,7 @@ import React from 'react';
 import { v4 } from 'uuid';
 
 export const ValueGradient = ({ stopColors, id, scale }) => {
+  if (!stopColors) return <linearGradient />;
   return (
     <linearGradient
       id={id}

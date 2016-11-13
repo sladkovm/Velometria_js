@@ -3,10 +3,10 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 
-import AppLayoutContainer from '../../ui/containers/AppLayout';
-import DefaultView from '../../ui/containers/Default-view';
-import SidePanel from '../../ui/containers/Side-panel';
-import ActivityView from '../../ui/containers/Activity-view';
+import AppLayoutContainer from '../../ui/containers/app-layout';
+import DefaultView from '../../ui/containers/default-view';
+import SidePanel from '../../ui/containers/side-panel';
+import ActivityView from '../../ui/containers/activity-view';
 
 
 /** @function - Router definition */

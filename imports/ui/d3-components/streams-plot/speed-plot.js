@@ -1,30 +1,23 @@
-import React, { PropTypes } from 'react';
-import { min as d3min, max as d3max } from 'd3';
-import { scaleLinear as d3scaleLinear } from 'd3-scale';
+import React from 'react';
 
 import AreaPlot from '../generic/area-plot.js';
-import LinePlot from './line-plot.js';
+import LinePlot from '../generic/line-plot.js';
+import { HistogramY } from '../generic/histogram';
 import { TickLabelsX, TickLabelsY } from '../generic/tick-labels.js';
 import { TicksX, TicksY } from '../generic/ticks.js';
 import { CHART_PROPS } from '../../styles/chart-props.js';
 import { COLORS } from '../../styles/colors.js';
 
 
-const getLine = (x, y, stroke = 'black') => {
-  const minX = d3min(x);
-  const maxX = d3max(x);
-  const minY = d3min(y);
-  const maxY = d3max(y);
-  const xScale = d3scaleLinear()
-          .domain([minX, maxX])
+export const renderLine = (xData, yData, stroke = 'black') => {
+  const xScale = xData.scaleDomain
           .range([CHART_PROPS.leftMargin, CHART_PROPS.width - CHART_PROPS.rightMargin]);
-  const yScale = d3scaleLinear()
-          .domain([minY, maxY])
+  const yScale = yData.scaleDomain
           .range([CHART_PROPS.height - CHART_PROPS.bottomMargin, CHART_PROPS.topMargin]);
   return (
     <LinePlot
-      x={x}
-      y={y}
+      xArray={xData.data}
+      yArray={yData.data}
       xScale={xScale}
       yScale={yScale}
       stroke={stroke}
@@ -33,86 +26,75 @@ const getLine = (x, y, stroke = 'black') => {
 };
 
 
-const getArea = (x, y, stroke = 'none') => {
-  const minX = d3min(x);
-  const maxX = d3max(x);
-  const minY = d3min(y);
-  const maxY = d3max(y);
-  const xScale = d3scaleLinear()
-          .domain([minX, maxX])
+export const renderArea = (xData, yData, stroke = 'none') => {
+  const xScale = xData.scaleDomain
           .range([CHART_PROPS.leftMargin, CHART_PROPS.width - CHART_PROPS.rightMargin]);
-  const yScale = d3scaleLinear()
-          .domain([minY, maxY])
+  const yScale = yData.scaleDomain
           .range([CHART_PROPS.height - CHART_PROPS.bottomMargin, CHART_PROPS.topMargin]);
   return (
     <AreaPlot
-      xArray={x}
-      yArray={y}
+      xArray={xData.data}
+      yArray={yData.data}
       xScale={xScale}
       yScale={yScale}
       stroke={stroke}
+      shadeColor={COLORS.grey}
     />
   );
 };
 
 
-const SpeedPlot = ({ altitude, speed, cadence, distance }) => {
-  const minSpeed = d3min(speed);
-  const maxSpeed = d3max(speed);
+export const renderHistogram = (yData) => {
+  const yScale = yData.scaleDomain
+          .range([CHART_PROPS.height - CHART_PROPS.bottomMargin, CHART_PROPS.topMargin]);
+  return (
+    <HistogramY
+      data={yData.data}
+      yScale={yScale}
+      chartProps={CHART_PROPS}
+      binWidth={5}
+    />);
+};
 
-  const minDistance = d3min(distance);
-  const maxDistance = d3max(distance);
 
-  const xScale = d3scaleLinear()
-          .domain([minDistance, maxDistance])
+const SpeedPlot = ({ xData, altitude, speed, cadence }) => {
+  const xScale = xData.scaleDomain
           .range([CHART_PROPS.leftMargin, CHART_PROPS.width - CHART_PROPS.rightMargin]);
 
-  const yScale = d3scaleLinear()
-          .domain([minSpeed, maxSpeed])
+  const yScale = speed.scaleDomain
           .range([CHART_PROPS.height - CHART_PROPS.bottomMargin, CHART_PROPS.topMargin]);
 
-  const ticksX = [minDistance, maxDistance];
-
-  const ticksY = [minSpeed, maxSpeed];
-
   return (
-    <div>
-      <svg width={CHART_PROPS.width} height={CHART_PROPS.height}>
-        {getArea(distance, altitude)}
-        {getLine(distance, speed, COLORS.blue)}
-        {getLine(distance, cadence, COLORS.red)}
-        <TicksX
-          ticks={ticksX}
-          xScale={xScale}
-          chartProps={CHART_PROPS}
-        />
-        <TicksY
-          ticks={ticksY}
-          yScale={yScale}
-          chartProps={CHART_PROPS}
-        />
-        <TickLabelsX
-          ticks={ticksX}
-          tickLabels={ticksX.map(t => Math.round(t / 1000))}
-          xScale={xScale}
-          chartProps={CHART_PROPS}
-        />
-        <TickLabelsY
-          ticks={ticksY}
-          tickLabels={ticksY.map(t => Math.round(t))}
-          yScale={yScale}
-          chartProps={CHART_PROPS}
-        />
-      </svg>
-    </div>
+    <svg width={CHART_PROPS.width} height={CHART_PROPS.height}>
+      {renderArea(xData, altitude)}
+      {renderLine(xData, speed, COLORS.blue)}
+      {renderLine(xData, cadence, COLORS.red)}
+      {renderHistogram(cadence)}
+      <TicksX
+        ticks={xData.ticks}
+        xScale={xScale}
+        chartProps={CHART_PROPS}
+      />
+      <TicksY
+        ticks={speed.ticks}
+        yScale={yScale}
+        chartProps={CHART_PROPS}
+      />
+      <TickLabelsX
+        ticks={xData.ticks}
+        tickLabels={xData.tickLabels}
+        xScale={xScale}
+        chartProps={CHART_PROPS}
+      />
+      <TickLabelsY
+        ticks={speed.ticks}
+        tickLabels={speed.tickLabels}
+        yScale={yScale}
+        chartProps={CHART_PROPS}
+      />
+    </svg>
   );
 };
 
-SpeedPlot.propTypes = {
-  altitude: PropTypes.array,
-  speed: PropTypes.array,
-  cadence: PropTypes.array,
-  distance: PropTypes.array,
-};
 
 export default SpeedPlot;

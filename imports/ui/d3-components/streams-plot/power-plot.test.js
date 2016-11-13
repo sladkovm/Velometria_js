@@ -75,4 +75,9 @@ describe('power-plot.js', function () {
     const actual = testObject.node.props.children[4].type.name;
     expect(actual).to.be.equal(expected);
   });
+  it('renders child <HistogramY>', function () {
+    const expected = 'HistogramY';
+    const actual = testObject.node.props.children[5].type.name;
+    expect(actual).to.be.equal(expected);
+  });
 });

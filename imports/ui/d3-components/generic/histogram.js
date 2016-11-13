@@ -1,37 +1,46 @@
 import React from 'react';
 import _ from 'lodash';
 import * as d3 from 'd3';
-import { ZONES_COLORS } from '../../styles/colors.js';
-import { zonesValuesPower, zonesValuesHR } from '../../../api/vm-athletes/vm-athlete.js';
 import { v4 } from 'uuid';
+import { COLORS_VEC } from '../../styles/colors.js';
+import { getAbsPowerZones } from '../../../api/vm-athletes/vm-athlete.js';
+
 
 /** @returns - number of bins to meet @param {double} - bin width */
-const calcNrBins = (y, binWidth) => {
-  const minY = d3.min(y);
-  const maxY = d3.max(y);
-  const minN = Math.round(minY / binWidth);
-  const maxN = Math.round(maxY / binWidth) + 1;
+export const calcNrBins = (data, binWidth) => {
+  const min = d3.min(data);
+  const max = d3.max(data);
+  const minN = Math.round(min / binWidth);
+  const maxN = Math.round(max / binWidth) + 1;
   const nBins = maxN - minN;
   return nBins;
 };
 
 
-export const HistogramY = ({ y, yScale, chartProps, binWidth = 20 }) => {
-  const x0 = chartProps.leftMargin - chartProps.histogramWidth;
-  const nBins = calcNrBins(y, binWidth);
+export const HistogramY = ({ data, yScale, chartProps, binWidth = 20 }) => {
+  // Generate histogram object
+  const nBins = calcNrBins(data, binWidth);
   const histogram = d3.histogram()
           .domain(yScale.domain())
           .thresholds(yScale.ticks(nBins));
-  const bins = histogram(y);
+  const bins = histogram(data);
+
+  // Position of the histogram along X axis
+  const x0 = chartProps.leftMargin - chartProps.histogramWidth;
+  // Calculate length of each bin
   const binsLength = bins.map((bin) => bin.length);
   // xScale for histogram must be defined in terms of length of the bin
   const xScale = d3.scaleLinear()
                   .domain([d3.min(binsLength), d3.max(binsLength)])
                   .range([0, chartProps.histogramWidth - chartProps.histogramPadding]);
 
+  // Generate color scale - color for each bin depending on the bin position
+  const powerVec = [d3.min(data), ..._.values(getAbsPowerZones()).reverse(), d3.max(data)];
+  // console.log(powerVec)
+  // console.log(COLORS_VEC)
   const colorScale = d3.scaleLinear()
-            .domain(_.values(zonesValuesPower(y)))
-            .range(_.values(ZONES_COLORS));
+            .domain(powerVec)
+            .range(COLORS_VEC);
 
 
   return (

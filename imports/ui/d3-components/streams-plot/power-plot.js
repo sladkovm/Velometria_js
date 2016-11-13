@@ -3,7 +3,7 @@ import React from 'react';
 import AreaPlot from '../generic/area-plot.js';
 import { TickLabelsX, TickLabelsY } from '../generic/tick-labels.js';
 import { TicksX, TicksY } from '../generic/ticks.js';
-import { HistogramY } from './histogram.js';
+import { HistogramY } from '../generic/histogram.js';
 //
 import { CHART_PROPS } from '../../styles/chart-props.js';
 
@@ -24,7 +24,7 @@ const PowerPlot = ({ xData, yData }) => {
         yScale={yScale}
         gradient
         stopColors={yData.stopColors}
-        stroke='none'
+        stroke="none"
       />
       <TicksX
         ticks={xData.ticks}
@@ -48,11 +48,11 @@ const PowerPlot = ({ xData, yData }) => {
         yScale={yScale}
         chartProps={CHART_PROPS}
       />
-      {/* <HistogramY
-        y={yData.data}
+      <HistogramY
+        data={yData.data}
         yScale={yScale}
         chartProps={CHART_PROPS}
-      /> */}
+      />
     </svg>
   );
 };

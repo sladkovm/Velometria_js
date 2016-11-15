@@ -14,6 +14,7 @@ export const getStopColors = (stream, zones, colors = COLORS_VEC) => {
     Math.round(100 * (1 - (max - zones.threshold) / range)),
     Math.round(100 * (1 - (max - zones.tempo) / range)),
     Math.round(100 * (1 - (max - zones.endurance) / range)),
+    Math.round(100 * (1 - (max - zones.recovery) / range)),
     0].reverse();
   return _.zipWith(offsets, colors, (o, c) => ({ offset: o, stopColor: c }));
 };

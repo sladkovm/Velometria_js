@@ -19,6 +19,7 @@ describe('vm-watts.js', function () {
     threshold: 270,
     tempo: 230,
     endurance: 200,
+    recovery: 150,
   };
   const ticks = [min,
                   zones.endurance,
@@ -27,13 +28,14 @@ describe('vm-watts.js', function () {
                   zones.anaerobic,
                   max].map(t => Math.round(t));
   const tickLabels = ticks;
-  const colors = ['red', 'red', 'grey', 'grey', 'blue', 'white'].reverse();
+  const colors = ['red', 'red', 'grey', 'yellow', 'grey', 'blue', 'white'].reverse();
   const stopColors = [
     { offset: 100, stopColor: 'red' },
     { offset: Math.round(100 * (1 - (max - zones.anaerobic) / range)), stopColor: 'red' },
     { offset: Math.round(100 * (1 - (max - zones.threshold) / range)), stopColor: 'grey' },
-    { offset: Math.round(100 * (1 - (max - zones.tempo) / range)), stopColor: 'grey' },
-    { offset: Math.round(100 * (1 - (max - zones.endurance) / range)), stopColor: 'blue' },
+    { offset: Math.round(100 * (1 - (max - zones.tempo) / range)), stopColor: 'yellow' },
+    { offset: Math.round(100 * (1 - (max - zones.endurance) / range)), stopColor: 'grey' },
+    { offset: Math.round(100 * (1 - (max - zones.recovery) / range)), stopColor: 'blue' },
     { offset: 0, stopColor: 'white' },
   ].reverse();
   const scaleDomain = scaleLinear().domain([min, max]);

@@ -22,6 +22,7 @@ describe('histogram.js', function () {
     if (Meteor.isServer) return;
     // Test data
     const data = [0, 50, 100, 200, 300, 400];
+    const type = 'watts';
     const binWidth = 20; // One bin per number
     const chartProps = {
       leftMargin: 100,
@@ -38,6 +39,7 @@ describe('histogram.js', function () {
     const testObject = shallow(
       <HistogramY
         data={data}
+        type={type}
         yScale={yScale}
         chartProps={chartProps}
         binWidth={binWidth}

@@ -5,12 +5,12 @@ import React from 'react';
 import { Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { vmWatts } from '../../api/vm-streams/vm-watts';
-import { vmHeartrate } from '../../api/vm-streams/vm-heartrate';
-import { vmDistance } from '../../api/vm-streams/vm-distance';
-import { vmAltitude } from '../../api/vm-streams/vm-altitude';
-import { vmCadence } from '../../api/vm-streams/vm-cadence';
-import { vmSpeed } from '../../api/vm-streams/vm-speed';
+import { vmWatts } from '../../api/vm-stream/vm-watts';
+import { vmHeartrate } from '../../api/vm-stream/vm-heartrate';
+import { vmDistance } from '../../api/vm-stream/vm-distance';
+import { vmAltitude } from '../../api/vm-stream/vm-altitude';
+import { vmCadence } from '../../api/vm-stream/vm-cadence';
+import { vmSpeed } from '../../api/vm-stream/vm-speed';
 import { getAbsPowerZones, getAbsHeartrateZones } from '../../api/vm-athletes/vm-athlete';
 import PowerPlot from '../d3-components/streams-plot/power-plot';
 import HeartratePlot from '../d3-components/streams-plot/heartrate-plot';
@@ -60,7 +60,7 @@ export const renderHeartrate = (xData, yData) => {
 };
 
 
-const renderSpeed = (xData, altitude, speed, cadence) => {
+export const renderSpeed = (xData, altitude, speed, cadence) => {
   if (!xData | !altitude | !speed | !cadence) return <EmptyPlot />;
   return (
     <SpeedPlot
@@ -77,10 +77,10 @@ export const renderStream = (id, stream) => {
   const streamObject = objectifyStream(stream);
   const powerData = vmWatts(streamObject.watts, getAbsPowerZones());
   const heartrateData = vmHeartrate(streamObject.heartrate, getAbsHeartrateZones());
-  const distanceData = vmDistance(streamObject.distance.data);
-  const speedData = vmSpeed(streamObject.velocity_smooth.data);
-  const altitudeData = vmAltitude(streamObject.altitude.data);
-  const cadenceData = vmCadence(streamObject.cadence.data);
+  const distanceData = vmDistance(streamObject.distance);
+  const speedData = vmSpeed(streamObject.velocity_smooth);
+  const altitudeData = vmAltitude(streamObject.altitude);
+  const cadenceData = vmCadence(streamObject.cadence);
   return (
     <div>
       {renderPower(distanceData, powerData)}

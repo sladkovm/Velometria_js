@@ -8,7 +8,13 @@ export const COLORS = {
 }; // https://color.adobe.com/Flat-UI-color-theme-2469224/
 
 export const COLORS_VEC =
-  [COLORS.red, COLORS.red, COLORS.grey, COLORS.grey, COLORS.blue, COLORS.white].reverse();
+  [COLORS.red,
+   COLORS.red,
+   COLORS.grey,
+   COLORS.yellow,
+   COLORS.grey,
+   COLORS.blue,
+   COLORS.white].reverse();
 //
 // export const COLORS_VEC =
 //   ['red', 'red', 'grey', 'grey', 'blue', 'white'];

@@ -25,7 +25,7 @@ const PowerPlot = ({ xData, yData }) => {
         gradient
         stopColors={yData.stopColors}
         stroke="none"
-        id="watts"
+        id={yData.type}
       />
       <TicksX
         ticks={xData.ticks}
@@ -50,7 +50,7 @@ const PowerPlot = ({ xData, yData }) => {
         chartProps={CHART_PROPS}
       />
       <HistogramY
-        type="watts"
+        type={yData.type}
         data={yData.data}
         yScale={yScale}
         chartProps={CHART_PROPS}

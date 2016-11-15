@@ -25,7 +25,7 @@ const HeartratePlot = ({ xData, yData }) => {
         gradient
         stopColors={yData.stopColors}
         stroke="none"
-        id="hr"
+        id={yData.type}
       />
       <TicksX
         ticks={xData.ticks}
@@ -50,7 +50,7 @@ const HeartratePlot = ({ xData, yData }) => {
         chartProps={CHART_PROPS}
       />
       <HistogramY
-        type="heartrate"
+        type={yData.type}
         data={yData.data}
         yScale={yScale}
         chartProps={CHART_PROPS}

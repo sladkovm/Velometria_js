@@ -3,7 +3,9 @@ import _ from 'lodash';
 import * as d3 from 'd3';
 import { v4 } from 'uuid';
 import { COLORS_VEC } from '../../styles/colors.js';
-import { getAbsPowerZones, getAbsHeartrateZones } from '../../../api/vm-athletes/vm-athlete.js';
+import { getAbsPowerZones,
+         getAbsHeartrateZones,
+         getCadenceZones } from '../../../api/vm-athletes/vm-athlete.js';
 
 
 /** @returns - number of bins to meet @param {double} - bin width */
@@ -24,10 +26,14 @@ export const dataVector = (type, data) => {
   if (type === 'heartrate') {
     return [d3.min(data), ..._.values(getAbsHeartrateZones()).reverse(), d3.max(data)];
   }
+  if (type === 'cadence') {
+    return [d3.min(data), ..._.values(getCadenceZones()).reverse(), d3.max(data)];
+  }
   return undefined;
 };
 
-export const HistogramY = ({ data, yScale, chartProps, type = 'watts', binWidth = 20 }) => {
+
+export const HistogramY = ({ data, yScale, chartProps, type, binWidth = 20 }) => {
   // Generate histogram object
   const nBins = calcNrBins(data, binWidth);
   const histogram = d3.histogram()

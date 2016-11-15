@@ -49,6 +49,7 @@ export const renderHistogram = (yData) => {
           .range([CHART_PROPS.height - CHART_PROPS.bottomMargin, CHART_PROPS.topMargin]);
   return (
     <HistogramY
+      type={yData.type}
       data={yData.data}
       yScale={yScale}
       chartProps={CHART_PROPS}

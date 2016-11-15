@@ -3,6 +3,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import { scaleLinear } from 'd3-scale';
+import { min as d3min, max as d3max } from 'd3';
+
 import PowerPlot from './power-plot.js';
 
 
@@ -20,6 +22,7 @@ describe('power-plot.js', function () {
     { offset: 0, color: 'white' },
   ];
   const xData = {
+    type: 'distance',
     min: 0,
     max: 5,
     ticks: [0, 5],
@@ -29,6 +32,7 @@ describe('power-plot.js', function () {
     colorStops,
   };
   const yData = {
+    type: 'watts',
     min: 0,
     max: 5,
     ticks: [0, 5],

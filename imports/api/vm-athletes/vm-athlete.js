@@ -12,7 +12,8 @@ export const getRelPowerZones = () => ({
   anaerobic: 1.1,
   threshold: 0.9,
   tempo: 0.75,
-  endurance: 0.55,
+  endurance: 0.65,
+  recovery: 0.55,
 });
 
 export const getRelHeartrateZones = () => ({
@@ -20,6 +21,7 @@ export const getRelHeartrateZones = () => ({
   threshold: 1.0,
   tempo: 0.93,
   endurance: 0.81,
+  recovery: 0.69,
 });
 
 export const getAbsPowerZones = () => {
@@ -30,6 +32,7 @@ export const getAbsPowerZones = () => {
     threshold: zones.threshold * ftp,
     tempo: zones.tempo * ftp,
     endurance: zones.endurance * ftp,
+    recovery: zones.recovery * ftp,
   };
 };
 
@@ -41,5 +44,17 @@ export const getAbsHeartrateZones = () => {
     threshold: Math.round(zones.threshold * lthr),
     tempo: Math.round(zones.tempo * lthr),
     endurance: Math.round(zones.endurance * lthr),
+    recovery: Math.round(zones.recovery * lthr),
+  };
+};
+
+
+export const getCadenceZones = () => {
+  return {
+    high: 110,
+    normal_max: 100,
+    normal_min: 90,
+    low: 70,
+    very_low: 60,
   };
 };

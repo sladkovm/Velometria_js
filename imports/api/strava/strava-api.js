@@ -5,6 +5,8 @@
 
 import { Meteor } from 'meteor/meteor';
 import strava from 'strava-v3';
+import moment from 'moment';
+
 import { Activities } from '../activities/activities.js';
 import { Streams } from '../streams/streams';
 import { ACTIVITY_TYPES } from './strava-constants.js';
@@ -12,8 +14,9 @@ import { ACTIVITY_TYPES } from './strava-constants.js';
 
 /** @function - wrapper for getting strava streams */
 export function getStravaStreamById(accessToken, activityId) {
-  strava.streams.activity({ access_token: accessToken,
-     id: activityId,
+  strava.streams.activity({
+    access_token: accessToken,
+    id: activityId,
     types: ACTIVITY_TYPES },
     Meteor.bindEnvironment((err, payload) => {
       if (err) {
@@ -27,6 +30,36 @@ export function getStravaStreamById(accessToken, activityId) {
       }
     }));
 }
+
+export const updateMongo = (err, payload) => {
+  if (err) throw err;
+  console.log('Update mongo:', payload.length);
+};
+
+
+export const listStravaActivities = (accessToken, args) => {
+  const { before, after } = args;
+
+  if (before) {
+    const epoch = moment(before).unix();
+    console.log('Before:', before, epoch)
+    strava.athlete.listActivities({ access_token: accessToken, before: epoch },
+      Meteor.bindEnvironment((err, payload) => {
+        updateMongo(err, payload);
+      })
+  );
+  }
+
+  if (after) {
+    const epoch = moment(after).unix();
+    console.log('After:', after, epoch)
+    strava.athlete.listActivities({ access_token: accessToken, after: epoch },
+    Meteor.bindEnvironment((err, payload) => {
+      updateMongo(err, payload);
+    })
+  );
+  }
+};
 
 
 /** @function - wrapper for getting recent 20 activities

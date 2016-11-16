@@ -13,6 +13,9 @@ export const TickLabelsX = ({ ticks, tickLabels, xScale, chartProps }) => {
           x={xScale(t)}
           y={y0}
           textAnchor="middle"
+          style={{
+            fill: 'grey',
+          }}
         >
           {tickLabels[i]}
         </text>
@@ -32,6 +35,9 @@ export const TickLabelsY = ({ ticks, tickLabels, yScale, chartProps }) => {
           x={x0}
           y={yScale(t) + chartProps.textAxisYoffset}
           textAnchor="end"
+          style={{
+            fill: 'grey',
+          }}
         >
           {tickLabels[i]}
         </text>

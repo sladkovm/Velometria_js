@@ -7,3 +7,4 @@ node_modules/
 # Strava API credentials #
 /server/strava-config.js
 /server/strava-config.json
+strava-api.test.js

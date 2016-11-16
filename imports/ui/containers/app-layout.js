@@ -8,8 +8,11 @@ import { Grid, Col, Row } from 'react-bootstrap';
 import Header from '../components/Header';
 import { Activities } from '../../api/activities/activities';
 import { Streams } from '../../api/streams/streams';
-import receiveActivities from '../../actions/receiveActivities';
-import receiveStreams from '../../actions/receiveStreams';
+
+import { fetchActivitiesRequest,
+         fetchActivitiesSuccess } from '../../actions/activities';
+import { fetchStreamsRequest,
+         fetchStreamsSuccess } from '../../actions/streams';
 
 
 class AppLayout extends Component {
@@ -26,25 +29,25 @@ class AppLayout extends Component {
   }
 
   storeActivities() {
-    const { isReadyActivities, activities, dispatch, state } = this.props;
+    const { isReadyActivities, activities, dispatch } = this.props;
+
     if (!isReadyActivities) {
-      // console.log('Loading', state);
+      dispatch(fetchActivitiesRequest());
     } else {
-      // console.log('dispatching', state);
-      dispatch(receiveActivities(activities));
+      dispatch(fetchActivitiesSuccess(activities));
     }
   }
 
   storeStreams() {
-    const { isReadyStreams, streams, dispatch, state } = this.props;
+    const { isReadyStreams, streams, dispatch } = this.props;
     if (!isReadyStreams) {
+      dispatch(fetchStreamsRequest());
     } else {
-      dispatch(receiveStreams(streams));
+      dispatch(fetchStreamsSuccess(streams));
     }
   }
 
   render() {
-    // this.storeActivities();
     const { mainView, sidePanel } = this.props;
     return (
       <Grid>
@@ -84,7 +87,13 @@ const getMeteorData = () => {
   return { isReadyActivities, activities, isReadyStreams, streams };
 };
 
+// Create Meteor Container wrapper
 const AppLayoutContainer = createContainer(getMeteorData, AppLayout);
 
+export const mapStateToProps = (state) => ({
+  isFetchingActivities: state.activities.isFetching,
+  isFetchingStreams: state.streams.isFetching,
+});
+
 // Connect to the Redux store
-export default connect()(AppLayoutContainer);
+export default connect(mapStateToProps)(AppLayoutContainer);

@@ -1,13 +1,28 @@
 /** @file - reducers*/
 import { combineReducers } from 'redux';
 
-import { RECEIVE_ACTIVITIES } from '../actions/receiveActivities';
 
+import { FETCH_ACTIVITIES_REQUEST,
+         FETCH_ACTIVITIES_SUCCESS,
+         FETCH_ACTIVITIES_ERROR } from '../actions/activities';
+
+
+const isFetching = (state = false, action) => {
+  switch (action.type) {
+    case FETCH_ACTIVITIES_REQUEST:
+      return true;
+    case FETCH_ACTIVITIES_SUCCESS:
+    case FETCH_ACTIVITIES_ERROR:
+      return false;
+    default:
+      return state;
+  }
+};
 
 const byId = (state = {}, action) => {
   switch (action.type) {
-    case RECEIVE_ACTIVITIES:
-      return Object.assign({}, action.response.entities.activities);
+    case FETCH_ACTIVITIES_SUCCESS:
+      return Object.assign({}, action.payload.entities.activities);
     default:
       return state;
   }
@@ -15,14 +30,14 @@ const byId = (state = {}, action) => {
 
 const allIds = (state = [], action) => {
   switch (action.type) {
-    case RECEIVE_ACTIVITIES:
-      return [...action.response.result];
+    case FETCH_ACTIVITIES_SUCCESS:
+      return [...action.payload.result];
     default:
       return state;
   }
 };
 
-const activities = combineReducers({ byId, allIds });
+const activities = combineReducers({ byId, allIds, isFetching });
 
 export default activities;
 

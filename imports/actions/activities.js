@@ -1,22 +1,18 @@
-import { normalize } from 'normalizr';
-import * as schema from './schema';
+import { Meteor } from 'meteor/meteor';
+import { startSubscription } from 'meteor-redux-middlewares';
+
+import { Activities } from '../api/activities/activities';
 
 
-export const FETCH_ACTIVITIES_REQUEST = 'FETCH_ACTIVITIES_REQUEST';
-export const FETCH_ACTIVITIES_SUCCESS = 'FETCH_ACTIVITIES_SUCCESS';
-export const FETCH_ACTIVITIES_ERROR = 'FETCH_ACTIVITIES_ERROR';
+export const ACTIVITIES_SUB = 'activities';
+export const ACTIVITIES_SUBSCRIPTION_READY = 'ACTIVITIES_SUBSCRIPTION_READY';
+export const ACTIVITIES_SUBSCRIPTION_CHANGED = 'ACTIVITIES_SUBSCRIPTION_CHANGED';
 
-export const fetchActivitiesRequest = () => ({
-  type: FETCH_ACTIVITIES_REQUEST,
-});
 
-export const fetchActivitiesSuccess = (activities = []) => ({
-  type: FETCH_ACTIVITIES_SUCCESS,
-  payload: normalize(activities, schema.arrayOfActivities),
-});
-
-export const fetchActivitiesError = () => ({
-  type: FETCH_ACTIVITIES_ERROR,
-  payload: new Error(),
-  error: true,
-});
+// Add filter, perPageLimit, pageSkip inputs
+export const loadActivities = () =>
+  startSubscription({
+    key: ACTIVITIES_SUB,
+    get: () => Activities.find().fetch(),
+    subscribe: () => Meteor.subscribe(ACTIVITIES_SUB),
+  });

@@ -1,6 +1,7 @@
 /** @file - Redux store definition and fixtures */
-
-import { createStore, applyMiddleware } from 'redux';
+import { Tracker } from 'meteor/tracker';
+import createReactiveMiddlewares from 'meteor-redux-middlewares';
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 
@@ -8,14 +9,19 @@ import rootReducer from '../../reducers';
 
 
 const configureStore = () => {
-  const middlewares = [];
+  const {
+    sources,
+    subscriptions,
+  } = createReactiveMiddlewares(Tracker);
+
+  const middlewares = [sources, subscriptions, thunk];
   if (process.env.NODE_ENV !== 'production') { // Do not return logging in production
     middlewares.push(createLogger());
   }
 
   return createStore(
     rootReducer,
-    applyMiddleware(...middlewares)
+    compose(applyMiddleware(...middlewares))
   );
 };
 

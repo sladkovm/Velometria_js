@@ -1,43 +1,41 @@
-/** @file - reducers*/
-import { combineReducers } from 'redux';
+import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
+import { normalize } from 'normalizr';
+import * as schema from './schema';
 
 
-import { FETCH_ACTIVITIES_REQUEST,
-         FETCH_ACTIVITIES_SUCCESS,
-         FETCH_ACTIVITIES_ERROR } from '../actions/activities';
+import { ACTIVITIES_SUB,
+         ACTIVITIES_SUBSCRIPTION_READY,
+         ACTIVITIES_SUBSCRIPTION_CHANGED } from '../actions/activities';
 
 
-const isFetching = (state = false, action) => {
+const initialState = {
+  ready: false,
+  byId: {},
+  allIds: [],
+  activitiesSubscriptionStopped: false,
+};
+
+export const activities = (state = initialState, action) => {
+  // console.log('Reducer: ', action)
   switch (action.type) {
-    case FETCH_ACTIVITIES_REQUEST:
-      return true;
-    case FETCH_ACTIVITIES_SUCCESS:
-    case FETCH_ACTIVITIES_ERROR:
-      return false;
+    case ACTIVITIES_SUBSCRIPTION_READY:
+      return Object.assign({}, state, { ready: action.payload.ready });
+    case ACTIVITIES_SUBSCRIPTION_CHANGED: {
+      const payload = normalize(action.payload, schema.arrayOfActivities);
+      return Object.assign({}, state,
+        {
+          byId: payload.entities.activities,
+          allIds: payload.result,
+        });
+    }
+    case STOP_SUBSCRIPTION:
+      return action.payload === ACTIVITIES_SUB
+        ? Object.assign({}, state, { activitiesSubscriptionStopped: true })
+        : state;
     default:
       return state;
   }
 };
-
-const byId = (state = {}, action) => {
-  switch (action.type) {
-    case FETCH_ACTIVITIES_SUCCESS:
-      return Object.assign({}, action.payload.entities.activities);
-    default:
-      return state;
-  }
-};
-
-const allIds = (state = [], action) => {
-  switch (action.type) {
-    case FETCH_ACTIVITIES_SUCCESS:
-      return [...action.payload.result];
-    default:
-      return state;
-  }
-};
-
-const activities = combineReducers({ byId, allIds, isFetching });
 
 export default activities;
 

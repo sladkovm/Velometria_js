@@ -1,43 +1,41 @@
-/** @file - reducers*/
-import { combineReducers } from 'redux';
-
-import { FETCH_STREAMS_REQUEST,
-         FETCH_STREAMS_SUCCESS,
-         FETCH_STREAMS_ERROR } from '../actions/streams';
+import { STOP_SUBSCRIPTION } from 'meteor-redux-middlewares';
+import { normalize } from 'normalizr';
+import * as schema from './schema';
 
 
-const isFetching = (state = false, action) => {
+import { STREAMS_SUB,
+         STREAMS_SUBSCRIPTION_READY,
+         STREAMS_SUBSCRIPTION_CHANGED } from '../actions/streams';
+
+
+const initialState = {
+  ready: false,
+  byId: {},
+  allIds: [],
+  streamsSubscriptionStopped: false,
+};
+
+export const streams = (state = initialState, action) => {
+  // console.log('Reducer: ', action)
   switch (action.type) {
-    case FETCH_STREAMS_REQUEST:
-      return true;
-    case FETCH_STREAMS_SUCCESS:
-    case FETCH_STREAMS_ERROR:
-      return false;
+    case STREAMS_SUBSCRIPTION_READY:
+      return Object.assign({}, state, { ready: action.payload.ready });
+    case STREAMS_SUBSCRIPTION_CHANGED: {
+      const payload = normalize(action.payload, schema.arrayOfStreams);
+      return Object.assign({}, state,
+        {
+          byId: payload.entities.streams,
+          allIds: payload.result,
+        });
+    }
+    case STOP_SUBSCRIPTION:
+      return action.payload === STREAMS_SUB
+        ? Object.assign({}, state, { streamsSubscriptionStopped: true })
+        : state;
     default:
       return state;
   }
 };
-
-const byId = (state = {}, action) => {
-  switch (action.type) {
-    case FETCH_STREAMS_SUCCESS:
-      // console.log(action.response)
-      return Object.assign({}, action.payload.entities.streams);
-    default:
-      return state;
-  }
-};
-
-const allIds = (state = [], action) => {
-  switch (action.type) {
-    case FETCH_STREAMS_SUCCESS:
-      return [...action.payload.result];
-    default:
-      return state;
-  }
-};
-
-const streams = combineReducers({ byId, allIds, isFetching });
 
 export default streams;
 

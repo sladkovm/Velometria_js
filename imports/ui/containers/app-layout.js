@@ -12,18 +12,21 @@ import Header from '../components/Header';
 import { loadActivities } from '../../actions/activities';
 import { loadStreams } from '../../actions/streams';
 
-export const ACTIVITIES_PER_PAGE = 10;
-
 
 class AppLayout extends Component {
   componentDidMount() {
-    this.props.getActivities();
+    this.props.getActivities(this.props.currentPage);
     this.props.getStreams();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentPage !== this.props.currentPage) {
+      this.props.getActivities(nextProps.currentPage);
+    }
+    // this.props.getStreams();
+  }
 
   render() {
-    // console.log('render')
     const { mainView, sidePanel } = this.props;
     return (
       <Grid>
@@ -47,12 +50,14 @@ class AppLayout extends Component {
 export const mapStateToProps = (state) => {
   return ({
     activities: state.activities,
+    activitiesCount: Counts.get('ActivitiesCount'),
+    currentPage: state.page.currentPage,
     streams: state.streams,
   });
 };
 
 export const mapDispatchToProps = (dispatch) => ({
-  getActivities: () => dispatch(loadActivities()),
+  getActivities: (page) => dispatch(loadActivities(page)),
   getStreams: () => dispatch(loadStreams()),
 });
 

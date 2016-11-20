@@ -102,10 +102,15 @@ export const ActivityView = ({ id, activity, stream }) => {
 };
 
 
-export const mapStateToProps = (state, ownProps) => ({
-  id: ownProps.params.id,
-  activity: state.activities.byId[ownProps.params.id],
-  stream: state.streams.byId[ownProps.params.id],
-});
+export const mapStateToProps = (state, ownProps) => {
+  const id = ownProps.params.id;
+  const activity = state.activities.byIdå ? state.activities.byId[id] : undefined;
+  const stream = state.streams.byId ? state.streams.byId[id] : undefined;
+  return {
+    id,
+    activity,
+    stream,
+  };
+};
 
 export default connect(mapStateToProps)(ActivityView);

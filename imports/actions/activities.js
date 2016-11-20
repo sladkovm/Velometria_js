@@ -10,9 +10,9 @@ export const ACTIVITIES_SUBSCRIPTION_CHANGED = 'ACTIVITIES_SUBSCRIPTION_CHANGED'
 
 
 // Add filter, perPageLimit, pageSkip inputs
-export const loadActivities = () =>
+export const loadActivities = (page) =>
   startSubscription({
     key: ACTIVITIES_SUB,
     get: () => Activities.find().fetch(),
-    subscribe: () => Meteor.subscribe(ACTIVITIES_SUB),
+    subscribe: () => Meteor.subscribe(ACTIVITIES_SUB, page),
   });

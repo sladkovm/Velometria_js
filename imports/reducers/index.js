@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import activities from './activities';
-import streams from './streams';
+import currentStream from './current-stream';
 import page from './page';
 
 
 const rootReducer = combineReducers({
   activities,
-  streams,
+  currentStream,
   page,
 });
 

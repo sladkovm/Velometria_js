@@ -1,7 +1,4 @@
-/** @file - Component to define the App level main container */
-
-
-import React from 'react';
+import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -16,6 +13,7 @@ import PowerPlot from '../d3-components/streams-plot/power-plot';
 import HeartratePlot from '../d3-components/streams-plot/heartrate-plot';
 import SpeedPlot from '../d3-components/streams-plot/speed-plot';
 import EmptyPlot from '../d3-components/streams-plot/empty-plot';
+import { loadCurrentStream } from '../../actions/current-stream';
 // import SpeedPlot from '../d3-components/streams-plot/speed-plot';
 
 /** @returns object with key = stream_name*/
@@ -92,25 +90,43 @@ export const renderStream = (id, stream) => {
 
 
 // The actual activiies data will be received via store
-export const ActivityView = ({ id, activity, stream }) => {
-  return (
-    <div>
-      {renderHeader(id, activity)}
-      {renderStream(id, stream)}
-    </div>
-  );
-};
+export class ActivityView extends Component {
+  componentDidMount() {
+    const { getCurrentStream, id } = this.props;
+    // console.log('didMount id=', id)
+    getCurrentStream(id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { getCurrentStream, id } = this.props;
+    // console.log('willreceiveProps id=', id, 'nextProps id =', nextProps.id)
+    if (nextProps.id !== id) getCurrentStream(nextProps.id);
+  }
+
+  render() {
+    const { id, activity, stream } = this.props;
+    return (
+      <div>
+        {renderHeader(id, activity)}
+        {renderStream(id, stream)}
+      </div>
+    );
+  }
+}
 
 
 export const mapStateToProps = (state, ownProps) => {
   const id = ownProps.params.id;
-  const activity = state.activities.byIdå ? state.activities.byId[id] : undefined;
-  const stream = state.streams.byId ? state.streams.byId[id] : undefined;
+  const activity = state.activities.byId ? state.activities.byId[id] : undefined;
   return {
     id,
     activity,
-    stream,
+    stream: state.currentStream.data,
   };
 };
 
-export default connect(mapStateToProps)(ActivityView);
+export const mapDispatchToProps = (dispatch) => ({
+  getCurrentStream: (id) => dispatch(loadCurrentStream(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityView);

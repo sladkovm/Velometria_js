@@ -10,13 +10,11 @@ import Header from '../components/Header';
 
 
 import { loadActivities } from '../../actions/activities';
-import { loadStreams } from '../../actions/streams';
 
 
 class AppLayout extends Component {
   componentDidMount() {
     this.props.getActivities(this.props.currentPage);
-    this.props.getStreams();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -52,13 +50,11 @@ export const mapStateToProps = (state) => {
     activities: state.activities,
     activitiesCount: Counts.get('ActivitiesCount'),
     currentPage: state.page.currentPage,
-    streams: state.streams,
   });
 };
 
 export const mapDispatchToProps = (dispatch) => ({
   getActivities: (page) => dispatch(loadActivities(page)),
-  getStreams: () => dispatch(loadStreams()),
 });
 
 // Connect to the Redux store

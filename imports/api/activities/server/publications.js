@@ -9,7 +9,7 @@ export const ACTIVITIES_PER_PAGE = 10;
 
 
 // Paginated query publication functions
-const getActivitiesPublication = function (nextPage) {
+const getActivitiesPublication = function (nextPage = 0) {
   // Handle page administration
   // Setupe the query
   const query = {};
